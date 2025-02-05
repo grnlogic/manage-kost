@@ -1,26 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Profile from "./component/Profile";
+import Home from "./component/Home"; // <- Ini adalah komponen halaman Home
+import Navbar from "./Navbar"; // Menambahkan import Navbar
 
-function App() {
+const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      {/* Hanya render Navbar jika user sudah login */}
+      {isLoggedIn && <Navbar setIsLoggedIn={setIsLoggedIn} />}
+
+      <div className="pt-16 p-4">
+        {/* Konten halaman */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
+        </Routes>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
