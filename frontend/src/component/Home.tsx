@@ -14,7 +14,7 @@ const Home = () => {
   const renderContent = () => {
     switch (activeContent) {
       case "notification":
-        return <Notification />
+        return <Notification />;
       case "infoKamar":
         return <InfoKamar />; // Memuat komponen InfoKamar
       case "pembayaran":
@@ -45,7 +45,7 @@ const Home = () => {
 
   const Home = () => {
     return (
-      <div className="w-full flex flex-col items-center bg-[#FFF8E7] min-h-screen">
+      <div className="w-full flex flex-col items-center bg-[#FFF7ED] min-h-screen">
         {/* Tombol Menu */}
         <div className="text-center px-6 mt-6 grid grid-cols-2 gap-4 place-items-center">
           <MenuButton icon={<Key size={32} />} text="Info Kamar!" />
