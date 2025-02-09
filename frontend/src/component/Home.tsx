@@ -30,30 +30,16 @@ const Home = () => {
 
   const MenuButton = ({ icon, text }: { icon: JSX.Element; text: string }) => {
     return (
-      <button className="flex flex-col items-center justify-center bg-white border border-gray-300 rounded-lg p-4 shadow-md transition-transform hover:scale-105 hover:shadow-lg w-full max-w-[150px]">
+      <button className="flex flex-col items-center justify-center bg-[#FEBF00] border border-gray-300 rounded-lg p-4 shadow-md transition-transform hover:scale-105 hover:shadow-lg w-full max-w-[150px] h-[150px] font-bold">
         {/* Ikon dengan warna kuning dan ukuran seragam */}
         <div className="text-[#FEBF00] w-8 h-8 flex items-center justify-center">
           {icon}
         </div>
-        {/* Teks dengan font bold dan warna hitam */}
-        <span className="mt-2 text-black font-semibold text-sm text-center">
+        {/* Teks dengan font bold dan warna putih */}
+        <span className="mt-2 text-white font-bold text-sm text-center">
           {text}
         </span>
       </button>
-    );
-  };
-
-  const Home = () => {
-    return (
-      <div className="w-full flex flex-col items-center bg-[#FFF7ED] min-h-screen">
-        {/* Tombol Menu */}
-        <div className="text-center px-6 mt-6 grid grid-cols-2 gap-4 place-items-center">
-          <MenuButton icon={<Key size={32} />} text="Info Kamar!" />
-          <MenuButton icon={<CreditCard size={32} />} text="Pembayaran" />
-          <MenuButton icon={<Calendar size={32} />} text="Jadwal kebersihan" />
-          <MenuButton icon={<HelpCircle size={32} />} text="FAQ" />
-        </div>
-      </div>
     );
   };
 
@@ -79,25 +65,25 @@ const Home = () => {
       <div className="text-center px-6 mt-6 grid grid-cols-2 gap-4 place-items-center">
         <button
           onClick={() => setActiveContent("infoKamar")}
-          className="bg-white border border-gray-300 rounded-lg p-4 shadow-md"
+          className="bg-[#FEBF00] border border-gray-300 text-white rounded-lg p-4 shadow-md w-full max-w-[150px] h-[150px] font-bold"
         >
           Info Kamar
         </button>
         <button
           onClick={() => setActiveContent("pembayaran")}
-          className="bg-white border border-gray-300 rounded-lg p-4 shadow-md"
+          className="bg-[#FEBF00] border border-gray-300 text-white rounded-lg p-4 shadow-md w-full max-w-[150px] h-[150px] font-bold"
         >
           Pembayaran
         </button>
         <button
           onClick={() => setActiveContent("jadwalKebersihan")}
-          className="bg-white border border-gray-300 rounded-lg p-4 shadow-md"
+          className="bg-[#FEBF00] border border-gray-300 rounded-lg text-white p-4 shadow-md w-full max-w-[150px] h-[150px] font-bold"
         >
           Jadwal Kebersihan
         </button>
         <button
           onClick={() => setActiveContent("faq")}
-          className="bg-white border border-gray-300 rounded-lg p-4 shadow-md"
+          className="bg-[#FEBF00] border border-gray-300 rounded-lg text-white p-4 shadow-md w-full max-w-[150px] h-[150px] font-bold"
         >
           FAQ
         </button>

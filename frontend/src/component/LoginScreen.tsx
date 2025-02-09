@@ -1,6 +1,7 @@
 import logoKuning from "./image/logo kuning.svg"; // Logo kuning
 import logoPutih from "./image/logo putih.svg"; // Logo putih
 import { useState, useEffect } from "react";
+import Home from "./Home";
 
 const LoginScreen = () => {
   const [loading, setLoading] = useState(true);
@@ -155,7 +156,10 @@ const LoginScreen = () => {
                 className="w-[300px] p-5 text-lg border border-orange-200 rounded-lg mb-7"
               />
 
-              <button className="mt-4 px-12 py-4 bg-black text-white rounded-lg w-full max-w-xs">
+              <button
+                className="mt-4 px-12 py-4 bg-black text-white rounded-lg w-full max-w-xs"
+                onClick={() => (window.location.href = "/Home")}
+              >
                 Log In
               </button>
               <p className="text-center mt-4 text-orange-600">Lupa Password?</p>

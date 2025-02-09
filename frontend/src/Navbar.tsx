@@ -47,7 +47,7 @@ const Navbar = ({
           <NavItem
             icon={<User size={24} />} // icon user
             isActive={location.pathname === "/profile"}
-            onClick={() => navigate("/notification")}
+            onClick={() => navigate("/profile")}
           />
           <NavItem
             icon={<LogOut size={24} />} // icon logout

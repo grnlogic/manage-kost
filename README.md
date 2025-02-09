@@ -1,3 +1,5 @@
+# Dalam tahap pengembangan
+
 # Manajemen Kost
 
 Aplikasi **Manajemen Kost** bertujuan untuk mempermudah pengelolaan kos-kosan, termasuk manajemen penghuni, pembayaran, dan tugas terkait pengelolaan kost. Aplikasi ini menggunakan **React (TSX)** untuk frontend dan **Spring Boot** serta **Strapi** untuk backend.
