@@ -1,51 +1,61 @@
 import logoKuning from "./image/logo kuning.svg"; // Logo kuning
 import logoPutih from "./image/logo putih.svg"; // Logo putih
 import { useState, useEffect } from "react";
-import Home from "./Home";
+import { useNavigate } from "react-router-dom"; // Gunakan navigasi React Router
 
-const LoginScreen = () => {
+interface LoginScreenProps {
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const LoginScreen: React.FC<LoginScreenProps> = ({ setIsLoggedIn }) => {
   const [loading, setLoading] = useState(true);
-  const [animate, setAnimate] = useState(false);
+  const [animate, setAnimate] = useState(true);
   const [logoMove, setLogoMove] = useState(false);
-  const [logoColorChange, setLogoColorChange] = useState(false); // Untuk mengubah warna logo
+  const [logoColorChange, setLogoColorChange] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
   const [contentMove, setContentMove] = useState(false);
   const [fadeOutWelcome, setFadeOutWelcome] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [showFormLoginAnimated, setShowFormLoginAnimated] = useState(false);
 
+  const navigate = useNavigate(); // Gunakan untuk navigasi
+
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-      setAnimate(true);
-      setLogoMove(true); // Logo mulai bergerak ke atas
+      setLogoMove(true);
 
-      // Animasi Welcome setelah logo selesai animasi
       setTimeout(() => {
         setShowWelcome(true);
         setTimeout(() => {
-          setContentMove(true); // Animasi Welcome masuk dari bawah
+          setContentMove(true);
+          setAnimate(false); // Menghilangkan bola kuning ketika konten welcome muncul
         }, 100);
       }, 500);
     }, 3000);
   }, []);
 
   const handleWelcomeLogin = () => {
-    setFadeOutWelcome(true); // Welcome fade-out
+    setFadeOutWelcome(true);
 
     setTimeout(() => {
-      setShowLoginForm(true); // Ubah background jadi oranye setelah Welcome hilang
+      setShowLoginForm(true);
       setTimeout(() => {
-        setShowFormLoginAnimated(true); // Animasi masuk Form Login
+        setShowFormLoginAnimated(true);
       }, 300);
     }, 1000);
   };
 
   const handleLogoChange = () => {
-    setLogoMove(true); // Logo bergerak naik
+    setLogoMove(true);
     setTimeout(() => {
-      setLogoColorChange(true); // Logo berubah menjadi putih setelah beberapa detik
+      setLogoColorChange(true);
     }, 500);
+  };
+
+  const handleLogin = () => {
+    setIsLoggedIn(true); // Perbarui status login
+    navigate("/home"); // Pindah ke halaman Home
   };
 
   return (
@@ -59,7 +69,7 @@ const LoginScreen = () => {
         <div className="relative w-full h-screen">
           <div
             className={`absolute top-[-140px] right-[-310px] w-80 h-80 bg-[#FEBF00] rounded-full transition-opacity duration-1000 ${
-              animate ? "opacity-0" : "opacity-100"
+              animate ? "opacity-100" : "opacity-0"
             }`}
           ></div>
         </div>
@@ -70,19 +80,18 @@ const LoginScreen = () => {
         <div className="relative w-full h-screen">
           <div
             className={`absolute bottom-[-120px] left-[-350px] w-80 h-80 bg-[#FEBF00] rounded-full transition-opacity duration-1000 ${
-              animate ? "opacity-0" : "opacity-100"
+              animate ? "opacity-100" : "opacity-0"
             }`}
           ></div>
         </div>
       )}
 
-      {/* Logo Kuning yang Berubah ke Putih */}
+      {/* Logo */}
       <div
         className={`flex justify-center items-center absolute top-0 left-0 right-0 bottom-0 transition-transform duration-1000 ${
-          logoMove ? "translate-y-[-20px]" : "opacity-0"
-        } ${showLoginForm ? "opacity-100" : "opacity-100"}`}
+          logoMove ? "translate-y-[-20px]" : "translate-y-0"
+        }`}
       >
-        {/* logo kuning */}
         <img
           src={logoKuning}
           alt="Logo Kuning"
@@ -91,7 +100,6 @@ const LoginScreen = () => {
           }`}
         />
 
-        {/* Logo kuning yang Berubah ke putih */}
         <img
           src={logoPutih}
           alt="Logo Putih"
@@ -117,14 +125,12 @@ const LoginScreen = () => {
           </h1>
 
           <p className="mt-2 text-sm text-gray-800">
-            Kelola kos lebih mudah dan praktis dalam satu aplikasi. Masuk ke
-            akun Anda untuk memantau pembayaran, tugas, dan informasi kos dengan
-            cepat dan aman.
+            Kelola kos lebih mudah dan praktis dalam satu aplikasi. Masuk ke akun Anda untuk memantau pembayaran, tugas, dan informasi kos dengan cepat dan aman.
           </p>
           <button
             onClick={() => {
-              handleWelcomeLogin(); // Menyembunyikan welcome dan menampilkan form login
-              handleLogoChange(); // Menambahkan animasi logo saat tombol login diklik
+              handleWelcomeLogin();
+              handleLogoChange();
             }}
             className="mt-4 px-12 py-4 bg-black text-white rounded-lg w-full max-w-xs"
           >
@@ -158,7 +164,7 @@ const LoginScreen = () => {
 
               <button
                 className="mt-4 px-12 py-4 bg-black text-white rounded-lg w-full max-w-xs"
-                onClick={() => (window.location.href = "/Home")}
+                onClick={handleLogin} // Gunakan fungsi login yang benar
               >
                 Log In
               </button>

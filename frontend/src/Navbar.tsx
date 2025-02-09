@@ -42,7 +42,7 @@ const Navbar = ({
           <NavItem
             icon={HomeIcon} // icon home
             isActive={location.pathname === "/"}
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/home")}
           />
           <NavItem
             icon={<User size={24} />} // icon user
@@ -51,7 +51,10 @@ const Navbar = ({
           />
           <NavItem
             icon={<LogOut size={24} />} // icon logout
-            onClick={() => setIsLoggedIn(false)}
+            onClick={() => {
+              setIsLoggedIn(false);
+              navigate("/");
+            }}
           />
         </div>
       </div>
