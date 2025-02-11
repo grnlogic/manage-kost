@@ -55,7 +55,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ setIsLoggedIn }) => {
 
   const handleLogin = () => {
     setIsLoggedIn(true); // Perbarui status login
-    navigate("/home"); // Pindah ke halaman Home
+    navigate("/kompleks"); // Pindah ke halaman Home
   };
 
   return (
@@ -79,7 +79,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ setIsLoggedIn }) => {
       {!showLoginForm && (
         <div className="relative w-full h-screen">
           <div
-            className={`absolute bottom-[-120px] left-[-350px] w-80 h-80 bg-[#FEBF00] rounded-full transition-opacity duration-1000 ${
+            className={`absolute bottom-[-200px] left-[-350px] w-80 h-80 bg-[#FEBF00] rounded-full transition-opacity duration-1000 ${
               animate ? "opacity-100" : "opacity-0"
             }`}
           ></div>
@@ -125,7 +125,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ setIsLoggedIn }) => {
           </h1>
 
           <p className="mt-2 text-sm text-gray-800">
-            Kelola kos lebih mudah dan praktis dalam satu aplikasi. Masuk ke akun Anda untuk memantau pembayaran, tugas, dan informasi kos dengan cepat dan aman.
+            Kelola kos lebih mudah dan praktis dalam satu aplikasi. Masuk ke
+            akun Anda untuk memantau pembayaran, tugas, dan informasi kos dengan
+            cepat dan aman.
           </p>
           <button
             onClick={() => {

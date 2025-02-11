@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import NavItem from "./NavItem";
 import { LogOut, User } from "lucide-react"; // Tambahkan User
 import Nofication from "./component/notification"; // Tambahkan Notification
+import Profile from "./component/Profile"; // Tambahkan Profile
 
 const HomeIcon = (
   <svg
@@ -47,7 +48,7 @@ const Navbar = ({
           <NavItem
             icon={<User size={24} />} // icon user
             isActive={location.pathname === "/profile"}
-            onClick={() => navigate("/profile")}
+            onClick={() => navigate("/Profile")}
           />
           <NavItem
             icon={<LogOut size={24} />} // icon logout

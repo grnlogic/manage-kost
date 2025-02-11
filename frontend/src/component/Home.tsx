@@ -44,7 +44,7 @@ const Home = () => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center bg-[#FFF8E7] min-h-screen">
+    <div className="w-full flex flex-col items-center bg-[#FFF8E7] min-h-screen pt-16 ">
       {/* Header */}
       <div className="w-full text-center bg-[#FEBF00] p-6 shadow-lg rounded-b-[30px]  ">
         {/* back button to notification */}

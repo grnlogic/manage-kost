@@ -14,17 +14,25 @@ import Notification from "./component/notification";
 import InfoKamar from "./component/user/InfoKamar";
 import JadwalKebersihan from "./component/user/JadwalKebersihan";
 import Pembayaran from "./component/user/pembayaran";
+import Kompleks from "./component/admin/kompleks";
 
-const Layout = ({ setIsLoggedIn }: { setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>> }) => {
+const Layout = ({
+  setIsLoggedIn,
+}: {
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const location = useLocation();
-  
+
   return (
     <>
       {/* Render Navbar hanya jika bukan di halaman login */}
       {location.pathname !== "/" && <Navbar setIsLoggedIn={setIsLoggedIn} />}
-      <div className="pt-16">
+      <div className="pt-0">
         <Routes>
-          <Route path="/" element={<LoginScreen setIsLoggedIn={setIsLoggedIn} />} />
+          <Route
+            path="/"
+            element={<LoginScreen setIsLoggedIn={setIsLoggedIn} />}
+          />
           <Route path="/home" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/faq" element={<FAQ />} />
@@ -32,6 +40,7 @@ const Layout = ({ setIsLoggedIn }: { setIsLoggedIn: React.Dispatch<React.SetStat
           <Route path="/pembayaran" element={<Pembayaran />} />
           <Route path="/jadwal-kebersihan" element={<JadwalKebersihan />} />
           <Route path="/notification" element={<Notification />} />
+          <Route path="/kompleks" element={<Kompleks />} />
         </Routes>
       </div>
     </>
