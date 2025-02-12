@@ -55,7 +55,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ setIsLoggedIn }) => {
 
   const handleLogin = () => {
     setIsLoggedIn(true); // Perbarui status login
-    navigate("/kompleks"); // Pindah ke halaman Home
+    navigate("/home"); // Pindah ke halaman Home
   };
 
   return (
