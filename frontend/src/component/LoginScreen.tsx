@@ -5,9 +5,10 @@ import { useNavigate } from "react-router-dom"; // Gunakan navigasi React Router
 
 interface LoginScreenProps {
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsAdmin: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const LoginScreen: React.FC<LoginScreenProps> = ({ setIsLoggedIn }) => {
+const LoginScreen: React.FC<LoginScreenProps> = ({ setIsLoggedIn, setIsAdmin }) => {
   const [loading, setLoading] = useState(true);
   const [animate, setAnimate] = useState(true);
   const [logoMove, setLogoMove] = useState(false);
@@ -55,22 +56,21 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ setIsLoggedIn }) => {
 
   const handleLogin = () => {
     setIsLoggedIn(true); // Perbarui status login
-    navigate("/home"); // Pindah ke halaman Home
+    setIsAdmin(true); // Perbarui status admin
+    navigate("/beranda"); // Pindah ke halaman Beranda Admin
   };
 
   return (
     <div
-      className={`h-screen w-full flex items-center justify-center transition-all duration-1000 relative overflow-hidden ${
-        showLoginForm ? "bg-[#FEBF00]" : "bg-white"
-      }`}
+      className={`h-screen w-full flex items-center justify-center transition-all duration-1000 relative overflow-hidden ${showLoginForm ? "bg-[#FEBF00]" : "bg-white"
+        }`}
     >
       {/* Lingkaran Kuning di Kanan Atas */}
       {!showLoginForm && (
         <div className="relative w-full h-screen">
           <div
-            className={`absolute top-[-140px] right-[-310px] w-80 h-80 bg-[#FEBF00] rounded-full transition-opacity duration-1000 ${
-              animate ? "opacity-100" : "opacity-0"
-            }`}
+            className={`absolute top-[-140px] right-[-310px] w-80 h-80 bg-[#FEBF00] rounded-full transition-opacity duration-1000 ${animate ? "opacity-100" : "opacity-0"
+              }`}
           ></div>
         </div>
       )}
@@ -79,46 +79,41 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ setIsLoggedIn }) => {
       {!showLoginForm && (
         <div className="relative w-full h-screen">
           <div
-            className={`absolute bottom-[-200px] left-[-350px] w-80 h-80 bg-[#FEBF00] rounded-full transition-opacity duration-1000 ${
-              animate ? "opacity-100" : "opacity-0"
-            }`}
+            className={`absolute bottom-[-200px] left-[-350px] w-80 h-80 bg-[#FEBF00] rounded-full transition-opacity duration-1000 ${animate ? "opacity-100" : "opacity-0"
+              }`}
           ></div>
         </div>
       )}
 
       {/* Logo */}
       <div
-        className={`flex justify-center items-center absolute top-0 left-0 right-0 bottom-0 transition-transform duration-1000 ${
-          logoMove ? "translate-y-[-20px]" : "translate-y-0"
-        }`}
+        className={`flex justify-center items-center absolute top-0 left-0 right-0 bottom-0 transition-transform duration-1000 ${logoMove ? "translate-y-[-20px]" : "translate-y-0"
+          }`}
       >
         <img
           src={logoKuning}
           alt="Logo Kuning"
-          className={`w-40 h-40 transition-all duration-1000 ${
-            logoColorChange ? "opacity-0" : "opacity-100"
-          }`}
+          className={`w-40 h-40 transition-all duration-1000 ${logoColorChange ? "opacity-0" : "opacity-100"
+            }`}
         />
 
         <img
           src={logoPutih}
           alt="Logo Putih"
-          className={`w-40 h-40 absolute transition-all duration-1000 ${
-            logoColorChange ? "opacity-100 translate-y-[-200px]" : "opacity-0"
-          }`}
+          className={`w-40 h-40 absolute transition-all duration-1000 ${logoColorChange ? "opacity-100 translate-y-[-200px]" : "opacity-0"
+            }`}
         />
       </div>
 
       {/* Konten Welcome */}
       {showWelcome && !showLoginForm && (
         <div
-          className={`absolute bottom-0 text-center bg-[#FEBF00] p-6 rounded-lg shadow-lg transition-all duration-1000 ${
-            fadeOutWelcome
-              ? "opacity-0 translate-y-20"
-              : contentMove
+          className={`absolute bottom-0 text-center bg-[#FEBF00] p-6 rounded-lg shadow-lg transition-all duration-1000 ${fadeOutWelcome
+            ? "opacity-0 translate-y-20"
+            : contentMove
               ? "opacity-100 translate-y-0"
               : "opacity-0 translate-y-20"
-          }`}
+            }`}
         >
           <h1 className="text-[49.312px] font-bold font-poppins leading-normal text-black text-left">
             Welcome
@@ -144,11 +139,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ setIsLoggedIn }) => {
       {/* Form Login */}
       {showLoginForm && (
         <div
-          className={`absolute bottom-0 text-center bg-white p-6 rounded-lg shadow-lg transition-all duration-1000 ${
-            showFormLoginAnimated
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-20"
-          }`}
+          className={`absolute bottom-0 text-center bg-white p-6 rounded-lg shadow-lg transition-all duration-1000 ${showFormLoginAnimated
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-20"
+            }`}
         >
           <div className="space-y-4 mt-8">
             <div className="bg-white p-6 rounded-xl shadow pb-10">

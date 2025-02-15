@@ -8,7 +8,8 @@ import backbutton from "./image/Vector back.svg";
 import Notification from "./notification";
 
 const Home = () => {
-  const [activeContent, setActiveContent] = useState<string>("infoKamar");
+  // Ubah nilai awal state activeContent menjadi "notification"
+  const [activeContent, setActiveContent] = useState<string>("notification");
 
   // Fungsi untuk memilih konten yang akan dirender
   const renderContent = () => {

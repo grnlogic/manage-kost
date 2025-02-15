@@ -6,7 +6,7 @@ const Contact = () => {
     <div>
       <div className="container mx-auto bg-[#FEBF00] rounded-md p-5 mb-9">
         <div className="flex items-center space-x-2">
-          <h3 className="text-2xl text-white font-extrabold text-2xl">Jadwal Anda</h3>
+          <h3 className="text-white font-extrabold text-2xl">Jadwal Anda</h3>
         </div>
         <div className="flex flex-col items-start bg-white rounded-md p-5 mt-4">
           <div className="flex justify-between w-full">
