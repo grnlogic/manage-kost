@@ -1,6 +1,7 @@
 import logoKuning from "./image/logo kuning.svg"; // Logo kuning
 import logoPutih from "./image/logo putih.svg"; // Logo putih
 import { useState, useEffect } from "react";
+import { Login } from "../data/Login"; // Import the Login function
 import { useNavigate } from "react-router-dom"; // Gunakan navigasi React Router
 
 interface LoginScreenProps {
@@ -18,7 +19,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ setIsLoggedIn, setIsAdmin }) 
   const [fadeOutWelcome, setFadeOutWelcome] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [showFormLoginAnimated, setShowFormLoginAnimated] = useState(false);
-
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate(); // Gunakan untuk navigasi
 
   useEffect(() => {
@@ -54,10 +57,16 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ setIsLoggedIn, setIsAdmin }) 
     }, 500);
   };
 
-  const handleLogin = () => {
-    setIsLoggedIn(true); // Perbarui status login
-    setIsAdmin(true); // Perbarui status admin
-    navigate("/beranda"); // Pindah ke halaman Beranda Admin
+  const handleLogin = async () => {
+    // Pastikan fungsi Login didefinisikan dan mengembalikan nilai yang sesuai
+    const success = await Login(username, password);
+    if (success) {
+      setIsLoggedIn(true);
+      setIsAdmin(true);
+      navigate("/beranda");
+    } else {
+      setError("Login gagal, periksa kembali username dan password");
+    }
   };
 
   return (
@@ -150,12 +159,16 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ setIsLoggedIn, setIsAdmin }) 
                 type="text"
                 placeholder="Username"
                 className="w-[300px] p-5 text-lg border border-orange-200 rounded-lg mb-7"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
 
               <input
                 type="password"
                 placeholder="Password"
                 className="w-[300px] p-5 text-lg border border-orange-200 rounded-lg mb-7"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
 
               <button
@@ -164,6 +177,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ setIsLoggedIn, setIsAdmin }) 
               >
                 Log In
               </button>
+              {error && <p className="text-center mt-4 text-red-600">{error}</p>}
               <p className="text-center mt-4 text-orange-600">Lupa Password?</p>
             </div>
           </div>

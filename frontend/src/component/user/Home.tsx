@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import InfoKamar from "./user/InfoKamar"; // Konten default
-import Pembayaran from "./user/pembayaran";
-import JadwalKebersihan from "./user/JadwalKebersihan";
-import FAQ from "./user/FAQ";
+import InfoKamar from "./InfoKamar"; // Konten default
+import Pembayaran from "./pembayaran";
+import JadwalKebersihan from "./JadwalKebersihan";
+import FAQ from "./FAQ";
 import { Calendar, CreditCard, HelpCircle, Key } from "lucide-react";
-import backbutton from "./image/Vector back.svg";
-import Notification from "./notification";
+import backbutton from "../image/chevron-right.svg";
+import Notification from "../notification";
 
 const Home = () => {
   // Ubah nilai awal state activeContent menjadi "notification"
