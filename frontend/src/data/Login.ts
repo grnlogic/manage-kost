@@ -1,6 +1,8 @@
 export const Login = async (username: string, password: string) => {
     try {
-        const apiUrl = import.meta.env.VITE_API_URL; // ✅ Harusnya sekarang tidak error
+        const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8080";
+
+        console.log("API URL:", apiUrl); // Debugging
 
         const response = await fetch(`${apiUrl}/api/auth/login`, {
             method: 'POST',
@@ -9,13 +11,11 @@ export const Login = async (username: string, password: string) => {
             },
             body: JSON.stringify({ username, password })
         });
-
         if (!response.ok) {
             throw new Error('Login gagal, periksa kembali username dan password');
         }
-
         const data = await response.json();
-        localStorage.setItem('token', data.token);
+        localStorage.setItem('token', data.token); // Simpan token
         return true;
     } catch (error) {
         console.error("Login Error:", error);

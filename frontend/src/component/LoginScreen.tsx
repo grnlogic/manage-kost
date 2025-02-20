@@ -1,7 +1,7 @@
+import { Login } from "../data/Login";  // Pastikan path relatif benar
 import logoKuning from "./image/logo kuning.svg"; // Logo kuning
 import logoPutih from "./image/logo putih.svg"; // Logo putih
 import { useState, useEffect } from "react";
-import { Login } from "../data/Login"; // Import the Login function
 import { useNavigate } from "react-router-dom"; // Gunakan navigasi React Router
 
 interface LoginScreenProps {
@@ -58,13 +58,12 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ setIsLoggedIn, setIsAdmin }) 
   };
 
   const handleLogin = async () => {
-    // Pastikan fungsi Login didefinisikan dan mengembalikan nilai yang sesuai
-    const success = await Login(username, password);
-    if (success) {
+    try {
+      const token = await Login(username, password);
       setIsLoggedIn(true);
       setIsAdmin(true);
       navigate("/beranda");
-    } else {
+    } catch (error) {
       setError("Login gagal, periksa kembali username dan password");
     }
   };
