@@ -12,7 +12,7 @@
 	<artifactId>SpringbootDatabase</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>SpringbootDatabase</name>
-	<description>Demo project for Spring Boot</description>
+	<description>mengelola database untuk kos</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -64,6 +64,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+    <groupId>io.jsonwebtoken</groupId>
+    <artifactId>jjwt</artifactId>
+    <version>0.9.1</version>
+</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
