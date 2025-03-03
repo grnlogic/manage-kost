@@ -26,6 +26,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
   const [showFormRegisterAnimated, setShowFormRegisterAnimated] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate(); // Gunakan untuk navigasi
 
@@ -64,8 +67,15 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
 
   const handleLogin = async () => {
     try {
-      const success = await Login(username, password);
-      if (success) {
+      const response = await fetch("http://localhost:8080/api/auth/login", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+      });
+
+      if (response.ok) {
         setIsLoggedIn(true);
         setIsAdmin(true);
         navigate("/beranda");
@@ -76,6 +86,23 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
       setError("Terjadi kesalahan saat login. Silakan coba lagi.");
     }
   };
+
+  const handleRegister = async () => {
+    if (!username || !email || !password || !phoneNumber) {
+      alert("Semua field harus diisi!");
+      return;
+    }
+  
+    const response = await fetch("http://localhost:8080/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, email, password, phoneNumber }),
+    });
+  
+    const data = await response.text();
+    alert(data); // Debugging, tampilkan respon dari backend
+  };
+  
 
   const handleShowRegister = () => {
     setShowFormLoginAnimated(false);
@@ -247,34 +274,45 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                 type="text"
                 placeholder="Nama Pengguna"
                 className="w-[300px] p-5 text-lg border border-orange-200 rounded-lg mb-7"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
 
               <input
                 type="email"
                 placeholder="Email"
                 className="w-[300px] p-5 text-lg border border-orange-200 rounded-lg mb-7"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
 
               <input
                 type="password"
                 placeholder="Password"
                 className="w-[300px] p-5 text-lg border border-orange-200 rounded-lg mb-7"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
 
               <input
                 type="password"
                 placeholder="Konfirmasi Password"
                 className="w-[300px] p-5 text-lg border border-orange-200 rounded-lg mb-7"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
               />
 
               <input
                 type="tel"
                 placeholder="Nomor Telepon"
                 className="w-[300px] p-5 text-lg border border-orange-200 rounded-lg mb-7"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
               />
 
               <button
                 className="mt-4 px-12 py-4 bg-black text-white rounded-lg w-full max-w-xs"
+                onClick={handleRegister}
               >
                 Register
               </button>
