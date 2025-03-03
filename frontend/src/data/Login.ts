@@ -2,8 +2,6 @@ export const Login = async (username: string, password: string) => {
     try {
         const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
-        console.log("API URL:", apiUrl); // Debugging
-
         const response = await fetch(`${apiUrl}/api/auth/login`, {
             method: 'POST',
             headers: {

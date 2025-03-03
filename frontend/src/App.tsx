@@ -12,6 +12,7 @@ import InfoKamar from "./component/user/InfoKamar";
 import JadwalKebersihan from "./component/user/JadwalKebersihan";
 import Pembayaran from "./component/user/pembayaran";
 import Kompleks from "./component/admin/kompleks";
+import Register from "./component/Registration";
 
 // Halaman Admin
 import Beranda from "./component/admin/Beranda";
@@ -56,6 +57,7 @@ const Layout = ({
             <Route path="/jadwal-kebersihan" element={<JadwalKebersihan />} />
             <Route path="/notification" element={<Notification />} />
             <Route path="/kompleks" element={<Kompleks />} />
+            <Route path="/register" element={<Register />} />
           </Route>
           <Route element={<ProtectedRoute isLoggedIn={isLoggedIn} isAdmin={isAdmin} adminOnly />}>
             <Route path="/Beranda" element={<Beranda />} />

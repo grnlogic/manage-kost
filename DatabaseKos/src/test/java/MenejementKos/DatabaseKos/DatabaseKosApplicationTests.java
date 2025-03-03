@@ -1,10 +1,10 @@
-package Manajementkost.SpringbootDatabase;
+package MenejementKos.DatabaseKos;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SpringbootDatabaseApplicationTests {
+class DatabaseKosApplicationTests {
 
 	@Test
 	void contextLoads() {
