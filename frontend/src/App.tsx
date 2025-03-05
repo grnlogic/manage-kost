@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 import ProtectedRoute from "./data/ProtectedRoute";
 import Profile from "./component/Profile";
 import Home from "./component/user/Home";
@@ -44,11 +50,27 @@ const Layout = ({
   return (
     <>
       {location.pathname !== "/" &&
-        (isAdmin ? <AdminNavbar setIsLoggedIn={setIsLoggedIn} /> : <UserNavbar setIsLoggedIn={setIsLoggedIn} />)}
+        (isAdmin ? (
+          <AdminNavbar setIsLoggedIn={setIsLoggedIn} />
+        ) : (
+          <UserNavbar setIsLoggedIn={setIsLoggedIn} />
+        ))}
       <div className="pt-0">
         <Routes>
-          <Route path="/" element={<LoginScreen setIsLoggedIn={setIsLoggedIn} setIsAdmin={setIsAdmin} />} />
-          <Route element={<ProtectedRoute isLoggedIn={isLoggedIn} isAdmin={isAdmin} />}>
+          <Route
+            path="/"
+            element={
+              <LoginScreen
+                setIsLoggedIn={setIsLoggedIn}
+                setIsAdmin={setIsAdmin}
+              />
+            }
+          />
+          <Route
+            element={
+              <ProtectedRoute isLoggedIn={isLoggedIn} isAdmin={isAdmin} />
+            }
+          >
             <Route path="/home" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/faq" element={<FAQ />} />
@@ -59,15 +81,29 @@ const Layout = ({
             <Route path="/kompleks" element={<Kompleks />} />
             <Route path="/register" element={<Register />} />
           </Route>
-          <Route element={<ProtectedRoute isLoggedIn={isLoggedIn} isAdmin={isAdmin} adminOnly />}>
+          <Route
+            element={
+              <ProtectedRoute
+                isLoggedIn={isLoggedIn}
+                isAdmin={isAdmin}
+                adminOnly
+              />
+            }
+          >
             <Route path="/Beranda" element={<Beranda />} />
             <Route path="/admin/edit-info-kamar" element={<EditInfoKamar />} />
-            <Route path="/admin/edit-jadwal-kebersihan" element={<EditJadwalKebersihan />} />
+            <Route
+              path="/admin/edit-jadwal-kebersihan"
+              element={<EditJadwalKebersihan />}
+            />
             <Route path="/admin/edit-pembayaran" element={<EditPembayaran />} />
             <Route path="/admin/faq" element={<FAQAdmin />} />
             <Route path="/admin/edit-peraturan" element={<EditPeraturan />} />
             <Route path="/admin/edit-pengumuman" element={<EditPengumuman />} />
-            <Route path="/admin/edit-akun-penghuni" element={<EditAkunPenghuni />} />
+            <Route
+              path="/admin/edit-akun-penghuni"
+              element={<EditAkunPenghuni />}
+            />
           </Route>
         </Routes>
       </div>
@@ -79,9 +115,17 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
+  // Cek environment variable
+  console.log("Backend URL:", process.env.REACT_APP_BACKEND_URL);
+
   return (
     <Router>
-      <Layout setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} isAdmin={isAdmin} setIsAdmin={setIsAdmin} />
+      <Layout
+        setIsLoggedIn={setIsLoggedIn}
+        isLoggedIn={isLoggedIn}
+        isAdmin={isAdmin}
+        setIsAdmin={setIsAdmin}
+      />
     </Router>
   );
 };
