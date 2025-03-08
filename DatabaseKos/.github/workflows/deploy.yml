@@ -7,6 +7,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment: production # Tentukan environment yang sesuai dengan yang sudah Anda buat (misalnya production)
 
     steps:
       - uses: actions/checkout@v2
@@ -18,7 +19,7 @@ jobs:
           distribution: "adopt"
 
       - name: Build with Maven
-        run: mvn -B package --file pom.xml
+        run: mvn -B package --file backend/pom.xml
 
       - name: Install Railway CLI
         run: npm install -g @railway/cli
@@ -26,13 +27,13 @@ jobs:
       - name: Login to Railway
         run: railway login --ci
         env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }} # Menggunakan secret dari environment
 
       - name: Deploy to Railway
         run: railway up
         env:
-          PGHOST: ${{ secrets.PGHOST }}
-          PGPORT: ${{ secrets.PGPORT }}
+          PGHOST: ${{ secrets.PGHOST }} # Menggunakan secret untuk host database
+          PGPORT: ${{ secrets.PGPORT }} # Menggunakan secret untuk port database
           PGDATABASE: ${{ secrets.PGDATABASE }}
           PGUSER: ${{ secrets.PGUSER }}
           PGPASSWORD: ${{ secrets.PGPASSWORD }}
