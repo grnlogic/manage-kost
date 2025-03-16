@@ -16,9 +16,10 @@ public class ContentController {
     private UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        return userService.login(loginRequest);
-    }
+public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    System.out.println("LoginRequest diterima: " + loginRequest.getUsername() + ", " + loginRequest.getPassword());
+    return userService.login(loginRequest);
+}
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {

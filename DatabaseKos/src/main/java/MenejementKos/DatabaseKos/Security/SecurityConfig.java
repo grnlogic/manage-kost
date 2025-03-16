@@ -55,6 +55,7 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/login", "/api/auth/register").permitAll() // Bisa diakses tanpa login
+                .requestMatchers("/admin/**").hasAuthority("ADMIN") // Hanya admin yang bisa mengakses endpoint ini
                 .anyRequest().authenticated()
             );
 

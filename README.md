@@ -2,101 +2,67 @@
 
 # Manajemen Kost
 
-Aplikasi **Manajemen Kost** bertujuan untuk mempermudah pengelolaan kos-kosan, termasuk manajemen penghuni, pembayaran, dan tugas terkait pengelolaan kost. Aplikasi ini menggunakan **React (TSX)** untuk frontend dan **Spring Boot** serta **Strapi** untuk backend.
+Aplikasi **Manajemen Kost** bertujuan untuk mempermudah pengelolaan kos-kosan, termasuk manajemen penghuni, pembayaran, dan tugas terkait pengelolaan kost. Aplikasi ini menggunakan **React (TSX)** untuk frontend dan **Spring Boot** untuk backend.
 
-## Teknologi yang Digunakan
+## 📌 Deskripsi
 
-### Frontend
-- **React (TSX)**
-- **Tailwind CSS** untuk styling
-- **React Router** untuk routing
-- **Axios** untuk komunikasi HTTP
+Backend aplikasi **Manajemen Kost** yang dibangun menggunakan **Spring Boot** untuk API utama.
 
-### Backend
-- **Spring Boot (Java)** untuk pengelolaan API
-- **Strapi** untuk CMS dan pengelolaan data yang lebih fleksibel
+## 🛠 Teknologi yang Digunakan
 
-## Fitur
+- **Spring Boot (Java)** – Backend utama
+- **PostgreSQL/MySQL** – Database utama
+- **Spring Security & JWT** – Autentikasi pengguna
+- **Docker (Opsional)** – Untuk containerization
 
-- **Manajemen Penghuni Kost**: Tambah, edit, dan hapus data penghuni.
-- **Pembayaran**: Mencatat dan memverifikasi pembayaran sewa kost.
-- **Manajemen Tugas**: Membuat dan mengelola tugas atau pengingat untuk penghuni atau admin.
-- **Autentikasi Pengguna**: Menggunakan JWT untuk login dan otorisasi.
-- **Responsif**: Tampilan dapat diakses dengan baik di perangkat desktop maupun mobile.
+## 🚀 Instalasi dan Menjalankan Backend
 
-## Instalasi
-
-### 1. Frontend
-Untuk memulai dengan frontend, lakukan langkah-langkah berikut:
+### 1️⃣ Clone Repository
 
 ```bash
-# Clone repositori
-git clone https://github.com/username/manajemen-kost.git
-
-# Masuk ke direktori frontend
-cd frontend
-
-# Install dependencies
-npm install
-
-# Jalankan aplikasi
-npm start
+git clone https://github.com/username/manajemen-kost-backend.git
+cd manajemen-kost-backend
 ```
 
-### 2. Backend
-#### a. Spring Boot
-Pastikan Anda memiliki **Java 17 atau lebih tinggi** dan **Maven** terinstal di sistem Anda.
+### 2️⃣ Jalankan Backend Spring Boot
+
+#### a. Pastikan Java & Maven sudah terinstal
 
 ```bash
-# Masuk ke direktori backend
-cd backend
+java -version  # Pastikan Java 17+ terinstal
+mvn -version   # Pastikan Maven terinstal
+```
 
-# Jalankan aplikasi
+#### b. Install dependencies dan jalankan aplikasi
+
+```bash
 ./mvnw spring-boot:run
 ```
 
-#### b. Strapi
-Pastikan Anda memiliki **Node.js dan npm** terinstal di sistem Anda.
-
-```bash
-# Masuk ke direktori Strapi
-cd strapi
-
-# Install dependencies
-npm install
-
-# Jalankan Strapi
-npm run develop
-```
-Setelah aplikasi Strapi berjalan, Anda bisa mengakses admin panel di [http://localhost:1337/admin](http://localhost:1337/admin).
-
-## Konfigurasi
-
-### Konfigurasi Strapi
-Setelah Strapi berjalan, Anda perlu membuat **Content Types** di admin panel sesuai kebutuhan aplikasi, seperti **Penghuni, Pembayaran, Tugas, dll**.
-
-### Konfigurasi Spring Boot
-Anda mungkin perlu mengatur konfigurasi database dan API di file `application.properties`.
-
-## Struktur Direktori
-```plaintext
-manajemen-kost/
-├── backend/          # Backend Spring Boot
-├── frontend/         # Frontend React (TSX)
-└── strapi/           # Backend CMS menggunakan Strapi
-```
-
-## Pengembangan
-Jika Anda ingin berkontribusi dalam pengembangan aplikasi ini, silakan ikuti langkah-langkah berikut:
-
-1. Fork repositori ini.
-2. Buat branch baru untuk fitur/bugfix yang akan Anda kerjakan.
-3. Kirim pull request setelah selesai.
-
-## Lisensi
-Proyek ini dilisensikan di bawah **MIT License**. Lihat file `LICENSE` untuk informasi lebih lanjut.
+Backend akan berjalan di `http://localhost:8080/`.
 
 ---
 
-*Catatan: Silakan sesuaikan URL repo atau konfigurasi sesuai implementasi spesifik aplikasi Anda.*
+## 📁 Struktur Direktori
 
+```plaintext
+manajemen-kost-backend/
+├── src/main/java/com/kost/  # Kode utama
+├── src/main/resources/      # Configurations
+├── pom.xml                  # Maven dependencies
+├── database/                # SQL dump jika ada
+└── README.md                # Dokumentasi backend
+```
+
+## 🔧 Pengembangan
+
+Jika ingin berkontribusi:
+
+1. **Fork** repository ini.
+2. Buat **branch baru** (`feature/nama-fitur`).
+3. Lakukan **commit** dan **push** perubahan ke branch tersebut.
+4. Buat **Pull Request** untuk review.
+
+## 📜 Lisensi
+
+Proyek ini dilisensikan di bawah **MIT License**. Lihat file `LICENSE` untuk informasi lebih lanjut.
