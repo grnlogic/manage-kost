@@ -26,4 +26,7 @@ public class MyAppUser {
     private String role = "USER";
 
     private String phoneNumber;
+
+    @Column(nullable = true)
+    private Long roomId;
 }

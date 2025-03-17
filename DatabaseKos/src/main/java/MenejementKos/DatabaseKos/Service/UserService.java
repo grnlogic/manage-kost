@@ -1,5 +1,6 @@
 package MenejementKos.DatabaseKos.Service;
 
+import MenejementKos.DatabaseKos.DTO.AssignRoomRequest;
 import MenejementKos.DatabaseKos.DTO.LoginRequest;
 import MenejementKos.DatabaseKos.DTO.RegisterRequest;
 import MenejementKos.DatabaseKos.model.MyAppUser;
@@ -9,9 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
-
 
 @Service
 public class UserService {
@@ -56,11 +56,33 @@ public class UserService {
         // Dummy token (di real case, gunakan JWT)
         String token = "dummy-token-" + user.getUsername();
     
-        // Kembalikan token dan role
-        return ResponseEntity.ok(Map.of(
-            "token", token,
-            "role", user.getRole() // Kirim role ke frontend
-        ));
+        // ✅ Perbaiki pengembalian response menggunakan HashMap untuk menangani `null`
+        Map<String, Object> response = new HashMap<>();
+        response.put("token", token);
+        response.put("role", user.getRole());
+        response.put("roomid", user.getRoomId() != null ? user.getRoomId() : "Belum memilih kamar");
+
+        return ResponseEntity.ok(response);
+    }
+
+    public ResponseEntity<?> assignRoom(Long userId, AssignRoomRequest request) {
+        Optional<MyAppUser> userOptional = userRepository.findById(userId);
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.badRequest().body("Pengguna tidak ditemukan!");
+        }
+    
+        MyAppUser user = userOptional.get();
+        user.setRoomId(request.getRoomId()); // ✅ Simpan roomId di database
+        userRepository.save(user);
+    
+        // ✅ Kembalikan data user terbaru, termasuk roomId yang baru
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Room ID berhasil diperbarui!");
+        response.put("userId", user.getId());
+        response.put("username", user.getUsername());
+        response.put("roomId", user.getRoomId());
+    
+        return ResponseEntity.ok(response);
     }
     
 }
