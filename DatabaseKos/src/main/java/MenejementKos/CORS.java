@@ -13,7 +13,11 @@ public class CORS {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("https://kos-app-frontend-git-main-geran357s-projects.vercel.app", "https://backend-kos-app.up.railway.app") // Tambahkan URL Strapi & Railway
+                        .allowedOrigins(
+                            "http://localhost:3000", // Tambahkan localhost untuk development
+                            "https://kos-app-frontend-git-main-geran357s-projects.vercel.app", 
+                            "https://backend-kos-app.up.railway.app"
+                        ) 
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);

@@ -56,26 +56,30 @@ public class UserService {
         // Dummy token (di real case, gunakan JWT)
         String token = "dummy-token-" + user.getUsername();
     
-        // ✅ Perbaiki pengembalian response menggunakan HashMap untuk menangani `null`
+        //  Perbaiki pengembalian response menggunakan HashMap untuk menangani `null`
         Map<String, Object> response = new HashMap<>();
         response.put("token", token);
         response.put("role", user.getRole());
-        response.put("roomid", user.getRoomId() != null ? user.getRoomId() : "Belum memilih kamar");
+        response.put("roomId", user.getRoomId() != null ? user.getRoomId() : "Belum memilih kamar");
 
         return ResponseEntity.ok(response);
     }
 
     public ResponseEntity<?> assignRoom(Long userId, AssignRoomRequest request) {
+        if (request.getRoomId() == null) {
+            return ResponseEntity.badRequest().body("Room ID tidak boleh kosong!");
+        }
+
         Optional<MyAppUser> userOptional = userRepository.findById(userId);
         if (userOptional.isEmpty()) {
             return ResponseEntity.badRequest().body("Pengguna tidak ditemukan!");
         }
     
         MyAppUser user = userOptional.get();
-        user.setRoomId(request.getRoomId()); // ✅ Simpan roomId di database
+        user.setRoomId(request.getRoomId()); //  Simpan roomId di database
         userRepository.save(user);
     
-        // ✅ Kembalikan data user terbaru, termasuk roomId yang baru
+        // Kembalikan data user terbaru, termasuk roomId yang baru
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Room ID berhasil diperbarui!");
         response.put("userId", user.getId());

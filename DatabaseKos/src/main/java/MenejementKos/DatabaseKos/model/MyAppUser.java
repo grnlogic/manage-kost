@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "registration") // Pastikan tabel bernama "users"
+@Table(name = "registration") 
 public class MyAppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
