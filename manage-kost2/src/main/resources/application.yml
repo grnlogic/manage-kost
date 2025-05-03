@@ -1,0 +1,61 @@
+server:
+  port: ${PORT:8080}
+  error:
+    include-message: always
+    include-binding-errors: always
+
+spring:
+  mail:
+    enabled: true
+    host: smtp.gmail.com
+    port: 587
+    username: geranuser@gmail.com
+    password: mnfy gzjt ydwd ofdy
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+
+  datasource:
+    url: ${DATABASE_URL} # Gunakan langsung DATABASE_URL dari Railway
+    username: ${PROD_DB_USERNAME} # Sesuaikan dengan variabel di Railway
+    password: ${PROD_DB_PASSWORD} # Sesuaikan dengan variabel di Railway
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 60000 # Disarankan lebih besar untuk environment cloud
+      maximum-pool-size: 5 # Pool size lebih besar untuk production
+      idle-timeout: 30000
+      max-lifetime: 1800000
+    fail-fast: true
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: ${SHOW_SQL:false} # Disable in production for better performance
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+      javax:
+        persistence:
+          schema-generation:
+            database-action: none
+
+  flyway:
+    enabled: false
+
+  main:
+    allow-bean-definition-overriding: true
+
+# Add custom logging configuration
+logging:
+  level:
+    root: INFO
+    MenejementKos: ${LOG_LEVEL:INFO}
+    org.springframework.web: INFO
+    org.hibernate: INFO
+    # Increase log level for HikariCP to see connection pool info
+    com.zaxxer.hikari: INFO
