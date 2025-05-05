@@ -62,6 +62,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/profile-picture/**").permitAll()
                 .requestMatchers("/api/faqs/**").permitAll()
                 .requestMatchers("/api/peraturan/**").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/profiles/**").permitAll()
                 .requestMatchers("/api/kamar/**").permitAll()
                 .requestMatchers("/api/pengumuman/**").permitAll()
