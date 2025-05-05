@@ -3,6 +3,8 @@ package MenejementKos.DatabaseKos.controller;
 import java.util.Collections;
 import java.util.Map;
 
+
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,8 @@ import MenejementKos.DatabaseKos.Service.OtpService;
 import MenejementKos.DatabaseKos.Service.UserService;
 import MenejementKos.DatabaseKos.model.MyAppUser;
 import MenejementKos.DatabaseKos.model.MyAppUserRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -54,6 +58,22 @@ public class AuthController {
         return userService.requestRegistrationOtp(email);
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletResponse response) {
+        logger.info("Logout request received");
+        
+        // Hapus cookie authToken
+        Cookie authCookie = new Cookie("authToken", null);
+        authCookie.setHttpOnly(true);
+        authCookie.setSecure("prod".equals(System.getenv("SPRING_PROFILES_ACTIVE")));  // HTTPS only in production
+        authCookie.setPath("/");
+        authCookie.setMaxAge(0);  // Set cookie expired
+        
+        response.addCookie(authCookie);
+        
+        return ResponseEntity.ok(Collections.singletonMap("message", "Logout successful"));
+    }
+
     @PostMapping("/verify-otp")
     public ResponseEntity<?> verifyOtp(@RequestBody VerifyOtpRequest request) {
         logger.info("OTP verification request received for email: {}", request.getEmail());
@@ -61,9 +81,28 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
         logger.info("Login request received for username: {}", loginRequest.getUsername());
-        return userService.login(loginRequest);
+        ResponseEntity<?> result = userService.login(loginRequest);
+        
+        // Jika login berhasil, tambahkan cookie
+        Map<String, Object> data = (Map<String, Object>) result.getBody();
+        if (data != null && data.get("token") != null) {
+            String token = data.get("token").toString();
+            
+            // Buat cookie dengan setting keamanan
+            Cookie authCookie = new Cookie("authToken", token);
+            authCookie.setHttpOnly(true);  // Mencegah akses dari JavaScript
+            authCookie.setSecure("prod".equals(System.getenv("SPRING_PROFILES_ACTIVE")));  // HTTPS only in production
+            authCookie.setPath("/");  // Cookie berlaku untuk semua path
+            authCookie.setMaxAge(7 * 24 * 60 * 60);  // 7 hari dalam detik
+            authCookie.setAttribute("SameSite", "Strict");  // Mencegah CSRF
+            
+            // Tambahkan cookie ke response
+            response.addCookie(authCookie);
+        }
+        
+        return result;
     }
 
     @PostMapping("/register")
