@@ -61,14 +61,49 @@ public class UserService {
         String otp = request.getOtp();
         
         if (otpService.verifyOtp(email, otp)) {
-            // Create token or session data to allow registration to proceed
-            String verificationToken = generateVerificationToken(email);
-            
-            return ResponseEntity.ok(Map.of(
-                "message", "OTP terverifikasi. Silakan lanjutkan pendaftaran.",
-                "token", verificationToken,
-                "verified", true
-            ));
+            // Check if registration data is included in the request
+            if (request.getUsername() != null && request.getPassword() != null) {
+                // Create user account immediately after OTP verification
+                try {
+                    // Validate username and email
+                    if (userRepository.existsByUsername(request.getUsername())) {
+                        return ResponseEntity.badRequest()
+                            .body(Map.of("message", "Username sudah digunakan"));
+                    }
+                    
+                    // Create and save user
+                    MyAppUser newUser = new MyAppUser();
+                    newUser.setUsername(request.getUsername());
+                    newUser.setEmail(email);
+                    newUser.setPassword(passwordEncoder.encode(request.getPassword())); // Hash password
+                    newUser.setPhoneNumber(request.getPhoneNumber());
+                    newUser.setRole(request.getRole() != null ? (String) request.getRole() : "USER"); // Default role USER
+                    
+                    userRepository.save(newUser);
+                    
+                    // Clear OTP after successful registration
+                    otpService.clearOtp(email);
+                    
+                    return ResponseEntity.ok(Map.of(
+                        "message", "Registrasi berhasil. Silakan login.",
+                        "username", newUser.getUsername(),
+                        "verified", true
+                    ));
+                } catch (Exception e) {
+                    logger.error("Registration failed after OTP verification: {}", e.getMessage(), e);
+                    return ResponseEntity.badRequest()
+                        .body(Map.of("message", "Registrasi gagal: " + e.getMessage()));
+                }
+            } else {
+                // If no registration data, just return verification token (old behavior)
+                String verificationToken = generateVerificationToken(email);
+                
+                return ResponseEntity.ok(Map.of(
+                    "message", "OTP terverifikasi. Silakan lanjutkan pendaftaran.",
+                    "token", verificationToken,
+                    "verified", true
+                ));
+            }
         } else {
             return ResponseEntity.badRequest()
                 .body(Map.of(
