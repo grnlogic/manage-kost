@@ -1,5 +1,6 @@
 package MenejementKos.DatabaseKos.Security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,14 +27,11 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final MyAppUserService myAppUserService;
-    private final JwtAuthFilter jwtAuthFilter;
-
-    // Konstruktor manual untuk menyuntikkan MyAppUserService dan JwtAuthFilter
-    public SecurityConfig(MyAppUserService myAppUserService, JwtAuthFilter jwtAuthFilter) {
-        this.myAppUserService = myAppUserService;
-        this.jwtAuthFilter = jwtAuthFilter;
-    }
+    @Autowired
+    private MyAppUserService myAppUserService;
+    
+    @Autowired
+    private JwtAuthFilter jwtAuthFilter;
 
     @Bean
     public UserDetailsService userDetailsService() {

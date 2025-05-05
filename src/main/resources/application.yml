@@ -49,6 +49,7 @@ spring:
 
   main:
     allow-bean-definition-overriding: true
+    allow-circular-references: true  # Add this line to allow circular references
 
 # Add custom logging configuration
 logging:
