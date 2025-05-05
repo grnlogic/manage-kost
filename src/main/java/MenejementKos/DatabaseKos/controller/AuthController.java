@@ -1,21 +1,25 @@
 package MenejementKos.DatabaseKos.controller;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
-
-
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+// Removed unused or conflicting import
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import MenejementKos.DatabaseKos.DTO.LoginRequest;
 import MenejementKos.DatabaseKos.DTO.RegisterRequest;
@@ -58,52 +62,86 @@ public class AuthController {
         return userService.requestRegistrationOtp(email);
     }
 
+    
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(HttpServletResponse response) {
-        logger.info("Logout request received");
-        
-        // Hapus cookie authToken
-        Cookie authCookie = new Cookie("authToken", null);
-        authCookie.setHttpOnly(true);
-        authCookie.setSecure("prod".equals(System.getenv("SPRING_PROFILES_ACTIVE")));  // HTTPS only in production
-        authCookie.setPath("/");
-        authCookie.setMaxAge(0);  // Set cookie expired
-        
-        response.addCookie(authCookie);
-        
-        return ResponseEntity.ok(Collections.singletonMap("message", "Logout successful"));
-    }
-
-    @PostMapping("/verify-otp")
-    public ResponseEntity<?> verifyOtp(@RequestBody VerifyOtpRequest request) {
-        logger.info("OTP verification request received for email: {}", request.getEmail());
-        return userService.verifyOtp(request);
-    }
+public ResponseEntity<?> logout(HttpServletResponse response) {
+    logger.info("Logout request received");
+    
+    // Hapus cookie authToken
+    Cookie authCookie = new Cookie("authToken", null);
+    authCookie.setHttpOnly(true);
+    authCookie.setSecure("prod".equals(System.getenv("SPRING_PROFILES_ACTIVE")));
+    authCookie.setPath("/");
+    authCookie.setMaxAge(0);  // Set cookie expired
+    response.addCookie(authCookie);
+    
+    // Hapus juga cookie isLoggedIn
+    Cookie isLoggedInCookie = new Cookie("isLoggedIn", null);
+    isLoggedInCookie.setHttpOnly(false);
+    isLoggedInCookie.setSecure("prod".equals(System.getenv("SPRING_PROFILES_ACTIVE")));
+    isLoggedInCookie.setPath("/");
+    isLoggedInCookie.setMaxAge(0);
+    response.addCookie(isLoggedInCookie);
+    
+    return ResponseEntity.ok(Collections.singletonMap("message", "Logout successful"));
+}
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
-        logger.info("Login request received for username: {}", loginRequest.getUsername());
-        ResponseEntity<?> result = userService.login(loginRequest);
+public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
+    logger.info("Login request received for username: {}", loginRequest.getUsername());
+    ResponseEntity<?> result = userService.login(loginRequest);
+    
+    // Jika login berhasil, tambahkan cookie
+    Map<String, Object> data = (Map<String, Object>) result.getBody();
+    if (data != null && data.get("token") != null) {
+        String token = data.get("token").toString();
         
-        // Jika login berhasil, tambahkan cookie
-        Map<String, Object> data = (Map<String, Object>) result.getBody();
-        if (data != null && data.get("token") != null) {
-            String token = data.get("token").toString();
-            
-            // Buat cookie dengan setting keamanan
-            Cookie authCookie = new Cookie("authToken", token);
-            authCookie.setHttpOnly(true);  // Mencegah akses dari JavaScript
-            authCookie.setSecure("prod".equals(System.getenv("SPRING_PROFILES_ACTIVE")));  // HTTPS only in production
-            authCookie.setPath("/");  // Cookie berlaku untuk semua path
-            authCookie.setMaxAge(7 * 24 * 60 * 60);  // 7 hari dalam detik
-            authCookie.setAttribute("SameSite", "Strict");  // Mencegah CSRF
-            
-            // Tambahkan cookie ke response
-            response.addCookie(authCookie);
-        }
+        // Buat cookie dengan setting keamanan
+        Cookie authCookie = new Cookie("authToken", token);
+        authCookie.setHttpOnly(true);  // Mencegah akses dari JavaScript
+        authCookie.setSecure("prod".equals(System.getenv("SPRING_PROFILES_ACTIVE")));  // HTTPS only in production
+        authCookie.setPath("/");  // Cookie berlaku untuk semua path
+        authCookie.setMaxAge(7 * 24 * 60 * 60);  // 7 hari dalam detik
+        authCookie.setAttribute("SameSite", "Strict");  // Mencegah CSRF
         
-        return result;
+        // Tambahkan cookie ke response
+        response.addCookie(authCookie);
+        
+        // Tambahkan cookie isLoggedIn yang bisa diakses JavaScript
+        Cookie statusCookie = new Cookie("isLoggedIn", "true");
+        statusCookie.setHttpOnly(false);  // Bisa diakses oleh JavaScript
+        statusCookie.setSecure("prod".equals(System.getenv("SPRING_PROFILES_ACTIVE")));
+        statusCookie.setPath("/");
+        statusCookie.setMaxAge(7 * 24 * 60 * 60);
+        response.addCookie(statusCookie);
     }
+    
+    return result;
+}
+@GetMapping("/user-info")
+public ResponseEntity<?> getUserInfo() {
+    // Ambil informasi user dari context keamanan
+    Authentication auth = (Authentication) SecurityContextHolder.getContext().getAuthentication();
+    if (auth == null || auth.getName().equals("anonymousUser")) {
+        return ResponseEntity.status(401).body(Map.of("message", "Tidak terautentikasi"));
+    }
+    
+    String username = auth.getName();
+    
+    // Cari user di database
+    MyAppUser user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new UsernameNotFoundException("User tidak ditemukan"));
+    
+    // Kembalikan informasi user yang dibutuhkan
+    Map<String, Object> response = new HashMap<>();
+    response.put("username", user.getUsername());
+    response.put("email", user.getEmail());
+    response.put("role", user.getRole());
+    // Tambahkan informasi lain yang dibutuhkan front-end
+    response.put("roomId", user.getRoomId());
+    
+    return ResponseEntity.ok(response);
+}
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
