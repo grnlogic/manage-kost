@@ -26,6 +26,7 @@ import MenejementKos.DatabaseKos.DTO.RegisterRequest;
 import MenejementKos.DatabaseKos.DTO.VerifyOtpRequest;
 import MenejementKos.DatabaseKos.Service.OtpService;
 import MenejementKos.DatabaseKos.Service.UserService;
+import MenejementKos.DatabaseKos.Service.JwtService;
 import MenejementKos.DatabaseKos.model.MyAppUser;
 import MenejementKos.DatabaseKos.model.MyAppUserRepository;
 import jakarta.servlet.http.Cookie;
@@ -55,6 +56,9 @@ public class AuthController {
     
     @Autowired
     private OtpService otpService;
+    
+    @Autowired
+    private JwtService jwtService;
 
     @PostMapping("/request-otp")
     public ResponseEntity<?> requestOtp(@RequestParam String email) {
@@ -103,6 +107,8 @@ public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServl
         authCookie.setPath("/");  // Cookie berlaku untuk semua path
         authCookie.setMaxAge(7 * 24 * 60 * 60);  // 7 hari dalam detik
         authCookie.setAttribute("SameSite", "Strict");  // Mencegah CSRF
+        // Cookie setting yang lebih baik untuk development/cross-domain
+        authCookie.setAttribute("SameSite", "Lax");
         
         // Tambahkan cookie ke response
         response.addCookie(authCookie);
@@ -187,5 +193,34 @@ public ResponseEntity<?> getUserInfo() {
             logger.error("Registration failed: {}", e.getMessage(), e);
             return ResponseEntity.badRequest().body(Map.of("message", "Registrasi gagal: " + e.getMessage()));
         }
+    }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<?> refreshToken(HttpServletResponse response) {
+        // Ambil informasi user dari token yang ada
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || auth.getName().equals("anonymousUser")) {
+            return ResponseEntity.status(401).body(Map.of("message", "Token tidak valid atau expired"));
+        }
+        
+        String username = auth.getName();
+        
+        // Cari user di database
+        MyAppUser user = userRepository.findByUsername(username)
+            .orElseThrow(() -> new UsernameNotFoundException("User tidak ditemukan"));
+        
+        // Generate token baru
+        String newToken = jwtService.generateToken(user);
+        
+        // Set cookie baru
+        Cookie authCookie = new Cookie("authToken", newToken);
+        authCookie.setHttpOnly(true);
+        authCookie.setSecure("prod".equals(System.getenv("SPRING_PROFILES_ACTIVE")));
+        authCookie.setPath("/");
+        authCookie.setMaxAge(7 * 24 * 60 * 60);
+        authCookie.setAttribute("SameSite", "Lax"); // Lebih permisif dari Strict
+        response.addCookie(authCookie);
+        
+        return ResponseEntity.ok(Map.of("message", "Token berhasil diperbarui"));
     }
 }
