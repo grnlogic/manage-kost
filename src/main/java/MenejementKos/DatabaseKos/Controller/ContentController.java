@@ -27,7 +27,8 @@ public class ContentController {
         return userService.getAllUsers();
     }
 
-    @PutMapping("/{userId}/assign-room")
+    // Mengubah endpoint dari /assign-room menjadi /assign-user-room untuk konsistensi penamaan
+    @PutMapping("/{userId}/assign-user-room")
     public ResponseEntity<?> assignRoom(
         @PathVariable Long userId,
         @RequestBody AssignRoomRequest request
@@ -56,7 +57,8 @@ public class ContentController {
         return userService.resetPassword(userId, request.get("newPassword"));
     }
 
-    @GetMapping("/some-endpoint")
+    // Mengubah nama endpoint dari /some-endpoint menjadi /user-endpoint untuk kejelasan fungsi
+    @GetMapping("/user-endpoint")
     public ResponseEntity<?> someEndpoint(@RequestParam(required = false) String id) {
         // Validasi jika ID null atau tidak valid
         if (id == null || id.equalsIgnoreCase("undefined")) {
