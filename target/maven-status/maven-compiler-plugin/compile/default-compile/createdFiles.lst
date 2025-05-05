@@ -16,6 +16,7 @@ MenejementKos/DatabaseKos/DTO/RegisterRequest.class
 MenejementKos/DatabaseKos/Controller/PeraturanController.class
 MenejementKos/DatabaseKos/Controller/RoomController.class
 MenejementKos/DatabaseKos/repository/peraturanRepository.class
+MenejementKos/DatabaseKos/controller/UserRedirectController.class
 MenejementKos/DatabaseKos/model/kamar.class
 MenejementKos/DatabaseKos/repository/PengumumanRepository.class
 MenejementKos/DatabaseKos/DTO/ResetPasswordRequest.class
@@ -44,6 +45,7 @@ MenejementKos/DatabaseKos/model/OtpTokenRepository.class
 MenejementKos/DatabaseKos/repository/KebersihanRepository.class
 MenejementKos/DatabaseKos/model/peraturan.class
 MenejementKos/DatabaseKos/Service/EmailService.class
+MenejementKos/DatabaseKos/Security/JwtAuthFilter.class
 MenejementKos/DatabaseKos/config/MailConfig.class
 MenejementKos/DatabaseKos/Service/PeraturanService.class
 MenejementKos/DatabaseKos/DTO/AssignRoomRequest.class
@@ -52,5 +54,6 @@ MenejementKos/DatabaseKos/Service/RoomService.class
 MenejementKos/DatabaseKos/Controller/ProfileController.class
 MenejementKos/DatabaseKos/model/MyAppUserService.class
 MenejementKos/CORS.class
+MenejementKos/DatabaseKos/Service/JwtService.class
 MenejementKos/DatabaseKos/repository/RoomRepository.class
 MenejementKos/DatabaseKos/Service/PengumumanService.class

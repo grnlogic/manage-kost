@@ -10,14 +10,14 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: geranuser@gmail.com
-    password: mnfy gzjt ydwd ofdy
+    password: uhrm ribj pfah bdps
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
-
+    debug: true
 
   datasource:
     url: ${DATABASE_URL} # Gunakan langsung DATABASE_URL dari Railway
@@ -59,3 +59,8 @@ logging:
     org.hibernate: INFO
     # Increase log level for HikariCP to see connection pool info
     com.zaxxer.hikari: INFO
+
+# JWT Configuration
+jwt:
+  secret: ${JWT_SECRET:secureJwtSecretKeyForKosAppMustBeAtLeast32Chars}
+  expiration: ${JWT_EXPIRATION:86400000} # 24 hours in milliseconds

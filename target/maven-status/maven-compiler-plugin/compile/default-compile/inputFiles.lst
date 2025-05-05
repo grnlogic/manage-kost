@@ -14,9 +14,11 @@
 /home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/DTO/ResetPasswordRequest.java
 /home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/DTO/VerifyOtpRequest.java
 /home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/DatabaseKosApplication.java
+/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Security/JwtAuthFilter.java
 /home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Security/SecurityConfig.java
 /home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Service/EmailService.java
 /home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Service/FaqAdminService.java
+/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Service/JwtService.java
 /home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Service/KamarService.java
 /home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Service/KebersihanService.java
 /home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Service/OtpService.java
@@ -30,6 +32,8 @@
 /home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/config/MailConfig.java
 /home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/config/WebConfig.java
 /home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/controller/AuthController.java
+/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/controller/HealthController.java
+/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/controller/UserRedirectController.java
 /home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/model/Clomun.java
 /home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/model/FaqAdmin.java
 /home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/model/Kebersihan.java

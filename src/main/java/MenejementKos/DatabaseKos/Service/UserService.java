@@ -33,6 +33,9 @@ public class UserService {
     
     @Autowired
     private OtpService otpService;
+    
+    @Autowired
+    private JwtService jwtService;
 
     public ResponseEntity<?> requestRegistrationOtp(String email) {
         try {
@@ -159,18 +162,19 @@ public class UserService {
     public ResponseEntity<?> login(LoginRequest loginRequest) {
         Optional<MyAppUser> userOptional = userRepository.findByUsername(loginRequest.getUsername());
         if (userOptional.isEmpty()) {
-            System.out.println("Username tidak ditemukan: " + loginRequest.getUsername());
+            logger.warn("Username tidak ditemukan: {}", loginRequest.getUsername());
             return ResponseEntity.badRequest().body("Username tidak ditemukan!");
         }
     
         MyAppUser user = userOptional.get();
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            System.out.println("Password salah untuk username: " + loginRequest.getUsername());
+            logger.warn("Password salah untuk username: {}", loginRequest.getUsername());
             return ResponseEntity.badRequest().body("Password salah!");
         }
     
-        // Dummy token (di real case, gunakan JWT)
-        String token = "dummy-token-" + user.getUsername();
+        // Generate real JWT token
+        String token = jwtService.generateToken(user);
+        logger.info("Successfully generated JWT token for user: {}", user.getUsername());
     
         //  Perbaiki pengembalian response menggunakan HashMap untuk menangani `null`
         Map<String, Object> response = new HashMap<>();

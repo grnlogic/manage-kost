@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -26,10 +27,12 @@ import java.util.List;
 public class SecurityConfig {
 
     private final MyAppUserService myAppUserService;
+    private final JwtAuthFilter jwtAuthFilter;
 
-    // Konstruktor manual untuk menyuntikkan MyAppUserService
-    public SecurityConfig(MyAppUserService myAppUserService) {
+    // Konstruktor manual untuk menyuntikkan MyAppUserService dan JwtAuthFilter
+    public SecurityConfig(MyAppUserService myAppUserService, JwtAuthFilter jwtAuthFilter) {
         this.myAppUserService = myAppUserService;
+        this.jwtAuthFilter = jwtAuthFilter;
     }
 
     @Bean
@@ -74,8 +77,9 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-            );
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

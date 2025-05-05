@@ -59,3 +59,8 @@ logging:
     org.hibernate: INFO
     # Increase log level for HikariCP to see connection pool info
     com.zaxxer.hikari: INFO
+
+# JWT Configuration
+jwt:
+  secret: ${JWT_SECRET:secureJwtSecretKeyForKosAppMustBeAtLeast32Chars}
+  expiration: ${JWT_EXPIRATION:86400000} # 24 hours in milliseconds
