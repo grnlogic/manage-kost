@@ -24,7 +24,7 @@ import MenejementKos.DatabaseKos.model.MyAppUser;
 import MenejementKos.DatabaseKos.model.MyAppUserRepository;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/users")
 @CrossOrigin(origins = {
     "http://localhost:3000",
     "https://kos-app-frontend-rzng-beta.vercel.app",
