@@ -8,6 +8,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import jakarta.annotation.PostConstruct;
+
 @Service
 public class EmailService {
     
@@ -21,6 +23,11 @@ public class EmailService {
     
     @Value("${spring.mail.enabled:false}")
     private boolean mailEnabled;
+
+    @PostConstruct
+    public void init() {
+        logger.info("EmailService initialized with mailEnabled={}", mailEnabled);
+    }
 
     public void sendEmail(String to, String subject, String body) {
         logger.info("Preparing to send email to {}, subject: {}", to, subject);

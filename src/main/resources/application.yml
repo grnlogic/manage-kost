@@ -17,7 +17,7 @@ spring:
           auth: true
           starttls:
             enable: true
-
+    debug: true
 
   datasource:
     url: ${DATABASE_URL} # Gunakan langsung DATABASE_URL dari Railway
