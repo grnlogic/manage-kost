@@ -5,6 +5,8 @@ import MenejementKos.DatabaseKos.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/api/room-requests")
@@ -14,6 +16,8 @@ public class RoomRequestController {
     @Autowired
     private UserService userService;
     
+    private static final Logger logger = LoggerFactory.getLogger(RoomRequestController.class);
+    
     // Endpoint untuk mengecek apakah controller berfungsi
     @GetMapping("/test")
     public ResponseEntity<?> testEndpoint() {
@@ -22,6 +26,11 @@ public class RoomRequestController {
     
     @PostMapping("/request")
     public ResponseEntity<?> requestRoom(@RequestParam Long userId, @RequestBody AssignRoomRequest request) {
+        if (userId == null) {
+            return ResponseEntity.badRequest().body("User ID is required");
+        }
+        
+        logger.info("Room request received for user: {}, room: {}", userId, request.getRoomId());
         return userService.requestRoom(userId, request);
     }
     
