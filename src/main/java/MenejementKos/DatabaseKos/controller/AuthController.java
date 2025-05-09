@@ -149,6 +149,12 @@ public ResponseEntity<?> getUserInfo() {
     return ResponseEntity.ok(response);
 }
 
+// Tambahkan ke AuthController.java
+@PostMapping("/auth/verify-otp")
+public ResponseEntity<?> verifyOtp(@RequestBody VerifyOtpRequest request) {
+    return userService.verifyOtp(request);
+}
+
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         logger.info("Registration request received for username: {}", request.getUsername());
