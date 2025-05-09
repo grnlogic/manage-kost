@@ -150,7 +150,7 @@ public ResponseEntity<?> getUserInfo() {
 }
 
 // Tambahkan ke AuthController.java
-@PostMapping("/auth/verify-otp")
+@PostMapping("/verify-otp")
 public ResponseEntity<?> verifyOtp(@RequestBody VerifyOtpRequest request) {
     return userService.verifyOtp(request);
 }

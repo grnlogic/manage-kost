@@ -20,7 +20,7 @@ Backend aplikasi **Manajemen Kost** yang dibangun menggunakan **Spring Boot** un
 ### 1️⃣ Clone Repository
 
 ```bash
-git clone https://github.com/username/manajemen-kost-backend.git
+git clone https://github.com/grnlogic/manajemen-kost-backend.git
 cd manajemen-kost-backend
 ```
 
