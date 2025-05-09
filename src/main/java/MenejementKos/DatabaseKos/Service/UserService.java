@@ -176,10 +176,12 @@ public class UserService {
         String token = jwtService.generateToken(user);
         logger.info("Successfully generated JWT token for user: {}", user.getUsername());
     
-        //  Perbaiki pengembalian response menggunakan HashMap untuk menangani `null`
+        // Tambahkan userId ke dalam response
         Map<String, Object> response = new HashMap<>();
         response.put("token", token);
         response.put("role", user.getRole());
+        response.put("userId", user.getId());  // Tambahkan userId
+        response.put("username", user.getUsername());  // Tambahkan username
         response.put("roomId", user.getRoomId() != null ? user.getRoomId().toString() : "Belum memilih kamar");
 
         return ResponseEntity.ok(response);

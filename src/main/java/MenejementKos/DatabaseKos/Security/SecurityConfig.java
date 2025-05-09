@@ -60,6 +60,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/login", "/api/auth/register", "/api/auth/**").permitAll()
                 .requestMatchers("/api/auth/request-otp", "/api/auth/verify-otp").permitAll() // New OTP endpoints
                 .requestMatchers("/api/profile-picture/upload").permitAll()
+                .requestMatchers("/api/user/pending-registrations").permitAll()
                 .requestMatchers("/api/profile-picture/**").permitAll()
                 .requestMatchers("/api/faqs/**").permitAll()
                 .requestMatchers("/api/peraturan/**").permitAll()
