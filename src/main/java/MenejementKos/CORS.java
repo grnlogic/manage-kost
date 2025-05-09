@@ -15,9 +15,9 @@ public class CORS {
                 registry.addMapping("/**")
                         .allowedOrigins(
                             "http://localhost:3000", 
-                            "https://kos-app-frontend-rzng-beta.vercel.app", // Removed trailing slash 
+                            "https://kos-app-frontend-rzng-beta.vercel.app", 
                             "https://vercel.com/geran357s-projects/kos-app-frontend-rzng/HLVtQC4FU14UkwetGQG8xkToB97P",
-                            "https://backend-kos-app.up.railway.app"
+                            "https://manage-kost-production.up.railway.app"
                         ) 
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
