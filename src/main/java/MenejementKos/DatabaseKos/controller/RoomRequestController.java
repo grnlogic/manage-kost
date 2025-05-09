@@ -8,17 +8,17 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/room-requests")
-@CrossOrigin(origins = {
-    "http://localhost:3000",
-    "https://kos-app-frontend-rzng-beta.vercel.app",
-    "https://vercel.com/geran357s-projects/kos-app-frontend-rzng/HLVtQC4FU14UkwetGQG8xkToB97P",
-    "https://backend-kos-app.up.railway.app",
-    "manage-kost-production.up.railway.app"
-})
+@CrossOrigin(origins = "*")
 public class RoomRequestController {
 
     @Autowired
     private UserService userService;
+    
+    // Endpoint untuk mengecek apakah controller berfungsi
+    @GetMapping("/test")
+    public ResponseEntity<?> testEndpoint() {
+        return ResponseEntity.ok("RoomRequestController berfungsi dengan baik!");
+    }
     
     @PostMapping("/request")
     public ResponseEntity<?> requestRoom(@RequestParam Long userId, @RequestBody AssignRoomRequest request) {

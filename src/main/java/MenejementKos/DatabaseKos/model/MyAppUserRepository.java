@@ -15,6 +15,8 @@ public interface MyAppUserRepository extends JpaRepository<MyAppUser, Long> {
     
     List<MyAppUser> findByRoomRequestStatusAndRoomIdNotNull(String status);
 
+List<MyAppUser> findByRoomRequestStatus(String status);
+
     boolean existsByUsername(String username);
     
     boolean existsByEmail(String email);

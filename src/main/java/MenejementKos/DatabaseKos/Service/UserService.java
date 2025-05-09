@@ -320,7 +320,10 @@ public class UserService {
         return ResponseEntity.ok(response);
     }
     
-    public ResponseEntity<?> approveRoomRequest(Long userId) {
+// Removed duplicate method definition to resolve the compile error
+
+public ResponseEntity<?> approveRoomRequest(Long userId) {
+    try {
         Optional<MyAppUser> userOptional = userRepository.findById(userId);
         if (userOptional.isEmpty()) {
             return ResponseEntity.badRequest().body("Pengguna tidak ditemukan!");
@@ -334,16 +337,22 @@ public class UserService {
         user.setRoomRequestStatus("APPROVED");
         userRepository.save(user);
         
-        return ResponseEntity.ok(Map.of(
-            "message", "Permintaan kamar disetujui!",
-            "userId", user.getId(),
-            "username", user.getUsername(),
-            "roomId", user.getRoomId(),
-            "status", user.getRoomRequestStatus()
-        ));
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Permintaan kamar disetujui!");
+        response.put("userId", user.getId());
+        response.put("username", user.getUsername());
+        response.put("roomId", user.getRoomId());
+        response.put("status", user.getRoomRequestStatus());
+        
+        return ResponseEntity.ok(response);
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body("Error: " + e.getMessage());
     }
-    
-    public ResponseEntity<?> rejectRoomRequest(Long userId) {
+}
+
+public ResponseEntity<?> rejectRoomRequest(Long userId) {
+    try {
         Optional<MyAppUser> userOptional = userRepository.findById(userId);
         if (userOptional.isEmpty()) {
             return ResponseEntity.badRequest().body("Pengguna tidak ditemukan!");
@@ -355,22 +364,25 @@ public class UserService {
         // user.setRoomId(null);
         userRepository.save(user);
         
-        return ResponseEntity.ok(Map.of(
-            "message", "Permintaan kamar ditolak!",
-            "userId", user.getId(),
-            "username", user.getUsername(),
-            "status", user.getRoomRequestStatus()
-        ));
-    }
-    
-    // Mendapatkan daftar permintaan kamar yang masih pending
-    public ResponseEntity<?> getPendingRoomRequests() {
-        try {
-            List<MyAppUser> pendingUsers = userRepository.findByRoomRequestStatusAndRoomIdNotNull("PENDING");
-            return ResponseEntity.ok(pendingUsers);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("message", "Gagal mendapatkan daftar permintaan: " + e.getMessage()));
-        }
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Permintaan kamar ditolak!");
+        response.put("userId", user.getId());
+        response.put("username", user.getUsername());
+        response.put("status", user.getRoomRequestStatus());
+        
+        return ResponseEntity.ok(response);
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body("Error: " + e.getMessage());
     }
 }
+
+public ResponseEntity<?> getPendingRoomRequests() {
+    try {
+        List<MyAppUser> pendingUsers = userRepository.findByRoomRequestStatus("PENDING");
+        return ResponseEntity.ok(pendingUsers);
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(Map.of("message", "Gagal mendapatkan daftar permintaan: " + e.getMessage()));
+    }
+}}
