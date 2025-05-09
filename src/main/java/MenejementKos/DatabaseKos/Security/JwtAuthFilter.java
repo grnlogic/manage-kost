@@ -1,6 +1,8 @@
 package MenejementKos.DatabaseKos.Security;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +40,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
+        
+        final String requestPath = request.getRequestURI();
+        
+        // Skip authentication for permitted paths
+        if (shouldSkipAuthentication(requestPath)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         
         try {
             final String authHeader = request.getHeader("Authorization");
@@ -98,5 +108,19 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
         
         return null;
+    }
+
+    private boolean shouldSkipAuthentication(String requestPath) {
+        // List of paths that should skip authentication
+        List<String> skipPaths = Arrays.asList(
+            "/api/auth/login", 
+            "/api/auth/register", 
+            "/api/auth/request-otp", 
+            "/api/auth/verify-otp",
+            "/api/room-requests/",
+            "/api/users/profile"
+        );
+        
+        return skipPaths.stream().anyMatch(requestPath::startsWith);
     }
 }

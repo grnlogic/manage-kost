@@ -180,8 +180,8 @@ public class UserService {
         Map<String, Object> response = new HashMap<>();
         response.put("token", token);
         response.put("role", user.getRole());
-        response.put("userId", user.getId());  // Tambahkan userId
-        response.put("username", user.getUsername());  // Tambahkan username
+        response.put("userId", user.getId());  // Pastikan ini ada
+        response.put("username", user.getUsername());
         response.put("roomId", user.getRoomId() != null ? user.getRoomId().toString() : "Belum memilih kamar");
 
         return ResponseEntity.ok(response);

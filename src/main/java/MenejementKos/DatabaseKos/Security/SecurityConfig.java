@@ -59,6 +59,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/login", "/api/auth/register", "/api/auth/**").permitAll()
                 .requestMatchers("/api/auth/request-otp", "/api/auth/verify-otp").permitAll() // New OTP endpoints
+                .requestMatchers("/api/room-requests/**").permitAll() // Tambahkan ini untuk mengizinkan endpoint room-requests
                 .requestMatchers("/api/profile-picture/upload").permitAll()
                 .requestMatchers("/api/user/pending-registrations").permitAll()
                 .requestMatchers("/api/profile-picture/**").permitAll()
@@ -97,18 +98,25 @@ public class SecurityConfig {
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(List.of(
-            "http://localhost:3000", 
-            "https://kos-app-frontend-rzng-beta.vercel.app",
-            "https://kos-app-frontend.vercel.app", // Add this
-            "https://vercel.com/geran357s-projects/kos-app-frontend-rzng/HLVtQC4FU14UkwetGQG8xkToB97P",
-            "https://manage-kost-production.up.railway.app", // Add this with https://
-            "https://backend-kos-app.up.railway.app" // Add this if needed
+        configuration.setAllowedOriginPatterns(List.of("*")); // Izinkan semua origin untuk development
+        
+        // Izinkan semua HTTP methods
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+        
+        // Izinkan semua headers yang umum digunakan
+        configuration.setAllowedHeaders(List.of(
+            "Authorization", 
+            "Content-Type", 
+            "Accept", 
+            "Origin", 
+            "X-Requested-With",
+            "Access-Control-Allow-Origin",
+            "Access-Control-Allow-Headers",
+            "Access-Control-Allow-Methods"
         ));
-
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept", "Origin")); // Add more headers
+        
         configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L); // Cache CORS response for 1 hour
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
