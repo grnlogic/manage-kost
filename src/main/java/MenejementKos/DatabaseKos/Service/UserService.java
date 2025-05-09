@@ -294,4 +294,83 @@ public class UserService {
             return ResponseEntity.badRequest().body("Error resetting password: " + e.getMessage());
         }
     }
+    
+    public ResponseEntity<?> requestRoom(Long userId, AssignRoomRequest request) {
+        if (request.getRoomId() == null) {
+            return ResponseEntity.badRequest().body("Room ID tidak boleh kosong!");
+        }
+
+        Optional<MyAppUser> userOptional = userRepository.findById(userId);
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.badRequest().body("Pengguna tidak ditemukan!");
+        }
+    
+        MyAppUser user = userOptional.get();
+        user.setRoomId((Long) request.getRoomId());
+        user.setRoomRequestStatus("PENDING"); // Set status permintaan kamar ke PENDING
+        userRepository.save(user);
+    
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Permintaan kamar berhasil dikirim!");
+        response.put("userId", user.getId());
+        response.put("username", user.getUsername());
+        response.put("roomId", user.getRoomId());
+        response.put("status", user.getRoomRequestStatus());
+    
+        return ResponseEntity.ok(response);
+    }
+    
+    public ResponseEntity<?> approveRoomRequest(Long userId) {
+        Optional<MyAppUser> userOptional = userRepository.findById(userId);
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.badRequest().body("Pengguna tidak ditemukan!");
+        }
+        
+        MyAppUser user = userOptional.get();
+        if (user.getRoomId() == null) {
+            return ResponseEntity.badRequest().body("Pengguna belum memilih kamar!");
+        }
+        
+        user.setRoomRequestStatus("APPROVED");
+        userRepository.save(user);
+        
+        return ResponseEntity.ok(Map.of(
+            "message", "Permintaan kamar disetujui!",
+            "userId", user.getId(),
+            "username", user.getUsername(),
+            "roomId", user.getRoomId(),
+            "status", user.getRoomRequestStatus()
+        ));
+    }
+    
+    public ResponseEntity<?> rejectRoomRequest(Long userId) {
+        Optional<MyAppUser> userOptional = userRepository.findById(userId);
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.badRequest().body("Pengguna tidak ditemukan!");
+        }
+        
+        MyAppUser user = userOptional.get();
+        user.setRoomRequestStatus("REJECTED");
+        // Opsional: Hapus roomId jika permintaan ditolak
+        // user.setRoomId(null);
+        userRepository.save(user);
+        
+        return ResponseEntity.ok(Map.of(
+            "message", "Permintaan kamar ditolak!",
+            "userId", user.getId(),
+            "username", user.getUsername(),
+            "status", user.getRoomRequestStatus()
+        ));
+    }
+    
+    // Mendapatkan daftar permintaan kamar yang masih pending
+    public ResponseEntity<?> getPendingRoomRequests() {
+        try {
+            List<MyAppUser> pendingUsers = userRepository.findByRoomRequestStatusAndRoomIdNotNull("PENDING");
+            return ResponseEntity.ok(pendingUsers);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("message", "Gagal mendapatkan daftar permintaan: " + e.getMessage()));
+        }
+    }
 }

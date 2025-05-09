@@ -17,8 +17,7 @@ public class CORS {
                             "http://localhost:3000", 
                             "https://kos-app-frontend-rzng-beta.vercel.app", // Removed trailing slash 
                             "https://vercel.com/geran357s-projects/kos-app-frontend-rzng/HLVtQC4FU14UkwetGQG8xkToB97P",
-                            "https://backend-kos-app.up.railway.app",
-                            "manage-kost-production.up.railway.app"
+                            "https://backend-kos-app.up.railway.app"
                         ) 
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")

@@ -35,6 +35,16 @@ public class MyAppUser {
     @Column(nullable = true)
     private Long roomId;
 
+    @Column(name = "room_request_status")
+    private String roomRequestStatus = "PENDING";
+
+    public String getRoomRequestStatus() {
+        return roomRequestStatus;
+    }
+    public void setRoomRequestStatus(String roomRequestStatus) {
+        this.roomRequestStatus = roomRequestStatus;
+    }
+
     public Long getRoomId() {
         return roomId;
     }
