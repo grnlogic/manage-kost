@@ -63,6 +63,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/user/pending-registrations").permitAll()
                 .requestMatchers("/api/profile-picture/**").permitAll()
                 .requestMatchers("/api/faqs/**").permitAll()
+                .requestMatchers("/api/users/profile").permitAll()
                 .requestMatchers("/api/peraturan/**").permitAll()
                 .requestMatchers("/api/users/**").permitAll()
                 .requestMatchers("/user/**").permitAll() // Tambahkan endpoint lama /user untuk backward compatibility
