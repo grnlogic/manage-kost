@@ -36,7 +36,7 @@ public class MyAppUser {
     private Long roomId;
 
     @Column(name = "room_request_status")
-    private String roomRequestStatus = "NONE";
+    private String roomRequestStatus = null; // Gunakan null daripada "NONE"
 
     public String getRoomRequestStatus() {
         return roomRequestStatus;
