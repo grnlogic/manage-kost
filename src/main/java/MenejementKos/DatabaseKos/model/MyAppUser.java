@@ -36,7 +36,7 @@ public class MyAppUser {
     private Long roomId;
 
     @Column(name = "room_request_status")
-    private String roomRequestStatus = "PENDING";
+    private String roomRequestStatus = "NONE";
 
     public String getRoomRequestStatus() {
         return roomRequestStatus;

@@ -33,7 +33,7 @@ public class RoomRequestController {
         logger.info("Room request received for user: {}, room: {}", userId, request.getRoomId());
         return userService.requestRoom(userId, request);
     }
-    
+    // Endpoint untuk mendapatkan semua permintaan kamar
     @PostMapping("/approve/{userId}")
     public ResponseEntity<?> approveRequest(@PathVariable Long userId) {
         return userService.approveRoomRequest(userId);
