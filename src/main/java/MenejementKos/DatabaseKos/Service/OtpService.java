@@ -7,9 +7,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,9 +16,6 @@ public class OtpService {
     
     // In-memory storage for OTPs (email -> {otp, expiry time})
     private final Map<String, Map<String, Object>> otpStorage = new ConcurrentHashMap<>();
-    
-    @Autowired
-    private JavaMailSender mailSender;
     
     // OTP validity period in minutes
     private static final int OTP_VALIDITY_MINUTES = 10;
@@ -41,13 +35,12 @@ public class OtpService {
         
         otpStorage.put(email, otpData);
         
-        // Send email with OTP
-        try {
-            sendOtpEmail(email, otp);
-            logger.info("OTP email sent to: {}", email);
-        } catch (Exception e) {
-            logger.error("Failed to send OTP email to {}: {}", email, e.getMessage());
-        }
+        // Log OTP for development (no email sending)
+        logger.info("========================================");
+        logger.info("OTP GENERATED FOR: {}", email);
+        logger.info("OTP CODE: {}", otp);
+        logger.info("EXPIRES AT: {}", LocalDateTime.now().plusMinutes(OTP_VALIDITY_MINUTES));
+        logger.info("========================================");
         
         return otp;
     }
@@ -99,16 +92,5 @@ public class OtpService {
         Random random = new Random();
         int otpNumber = 100000 + random.nextInt(900000);
         return String.valueOf(otpNumber);
-    }
-    
-    // Send email with OTP
-    private void sendOtpEmail(String toEmail, String otp) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(toEmail);
-        message.setSubject("Verifikasi OTP untuk Pendaftaran Akun Kos App");
-        message.setText("Kode OTP Anda adalah: " + otp + "\n\nKode ini berlaku selama " 
-                + OTP_VALIDITY_MINUTES + " menit. Jangan bagikan kode ini kepada siapapun.");
-        
-        mailSender.send(message);
     }
 }

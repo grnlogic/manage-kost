@@ -1,0 +1,26 @@
+server:
+  port: 0 # Random port untuk testing
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/kos_app_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate # Jangan ubah schema, pakai yang sudah ada
+    show-sql: false # Matikan SQL logging untuk test lebih cepat
+
+  mail:
+    enabled: false
+
+jwt:
+  secret: testSecretKeyForIntegrationTestingMustBeAtLeast32Chars
+  expiration: 3600000
+
+logging:
+  level:
+    root: WARN
+    MenejementKos: INFO

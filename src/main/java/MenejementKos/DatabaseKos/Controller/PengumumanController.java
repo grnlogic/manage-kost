@@ -10,7 +10,7 @@ import MenejementKos.DatabaseKos.Service.PengumumanService;
 import MenejementKos.DatabaseKos.model.PengumumanAdmin;
 
 @CrossOrigin(origins = {
-    "http://localhost:3000",
+    "http://141.11.25.167:3000",
     "https://kos-app-frontend.vercel.app"
 })
 @RestController

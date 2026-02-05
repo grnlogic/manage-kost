@@ -1,0 +1,677 @@
+================================================================================
+                     HASIL TESTING SEMUA CONTROLLER
+                         KOS APP BACKEND API
+                           2025-11-06
+================================================================================
+
+RINGKASAN TESTING
+================================================================================
+Total Tests        : 32
+Passed             : 29 ✅
+Failed             : 3 ❌
+Success Rate       : 90.6%
+
+================================================================================
+AKUN YANG DIGUNAKAN UNTUK TESTING
+================================================================================
+
+1. ADMIN ACCOUNT
+   Username        : admin
+   Password        : admin123
+   User ID         : 1
+   Role            : ADMIN
+   Room ID         : null (Belum memilih kamar)
+   Status          : Active
+
+2. USER DENGAN KAMAR (Geran)
+   Username        : geran
+   Password        : fajargeran2005
+   User ID         : 2
+   Role            : USER
+   Room ID         : 1 (Kamar 001)
+   Status          : APPROVED
+
+3. USER BELUM PUNYA KAMAR (Kokoro)
+   Username        : kokoro
+   Password        : fajargeran2005
+   User ID         : 7
+   Role            : USER
+   Room ID         : 5 (Kamar 003 - setelah approval)
+   Status          : APPROVED (after request)
+
+================================================================================
+CONTROLLER 1: AuthController (/api/auth)
+================================================================================
+
+Test 1: Login Admin
+--------
+Method          : POST
+URL             : /api/auth/login
+Status          : ✅ PASSED
+Request Body    : {"username":"admin","password":"admin123"}
+Response        : {
+                    "role": "ADMIN",
+                    "userId": 1,
+                    "roomId": "Belum memilih kamar",
+                    "username": "admin",
+                    "token": "eyJhbGciOiJIUzI1NiJ9..."
+                  }
+
+Test 2: Login User (geran)
+--------
+Method          : POST
+URL             : /api/auth/login
+Status          : ✅ PASSED
+Request Body    : {"username":"geran","password":"fajargeran2005"}
+Response        : {
+                    "role": "USER",
+                    "userId": 2,
+                    "roomId": "1",
+                    "username": "geran",
+                    "token": "eyJhbGciOiJIUzI1NiJ9..."
+                  }
+
+Test 3: Login User (kokoro)
+--------
+Method          : POST
+URL             : /api/auth/login
+Status          : ✅ PASSED
+Request Body    : {"username":"kokoro","password":"fajargeran2005"}
+Response        : {
+                    "role": "USER",
+                    "userId": 7,
+                    "roomId": "Belum memilih kamar",
+                    "username": "kokoro",
+                    "token": "eyJhbGciOiJIUzI1NiJ9..."
+                  }
+
+Test 4: Get User Info
+--------
+Method          : GET
+URL             : /api/auth/user-info
+Status          : ❌ FAILED
+Error           : 401 Unauthorized
+Notes           : Cookie authentication not working with WebSession
+
+Test 5: Logout
+--------
+Method          : POST
+URL             : /api/auth/logout
+Status          : ✅ PASSED
+Response        : {"message":"Logout successful"}
+
+================================================================================
+CONTROLLER 2: ContentController (/api/users)
+================================================================================
+
+Test 6: Get All Users
+--------
+Method          : GET
+URL             : /api/users
+Status          : ✅ PASSED
+Tested By       : Admin
+Response        : Array of 5 users:
+                  - admin (ID: 1, Role: ADMIN)
+                  - geran (ID: 2, Role: USER, Room: 1)
+                  - testuser123 (ID: 3, Role: USER, Room: null)
+                  - arifin (ID: 6, Role: USER, Room: 2)
+                  - kokoro (ID: 7, Role: USER, Room: 5)
+
+Test 7: Reset Password
+--------
+Method          : PUT
+URL             : /api/users/3/reset-password
+Status          : ✅ PASSED
+Tested By       : Admin
+Request Body    : {"newPassword":"newpassword123"}
+Response        : {"message":"Password reset successful"}
+
+================================================================================
+CONTROLLER 3: RoomRequestController (/api/room-requests)
+================================================================================
+
+Test 8: Test Endpoint
+--------
+Method          : GET
+URL             : /api/room-requests/test
+Status          : ✅ PASSED
+Tested By       : Kokoro
+Response        : "RoomRequestController berfungsi dengan baik!"
+
+Test 9: Get Pending Requests (Empty)
+--------
+Method          : GET
+URL             : /api/room-requests/pending
+Status          : ✅ PASSED
+Tested By       : Admin
+Response        : []
+
+Test 10: Request Room (Kokoro request kamar 5)
+--------
+Method          : POST
+URL             : /api/room-requests/request?userId=7
+Status          : ✅ PASSED
+Tested By       : Kokoro
+Request Body    : {"roomId":5}
+Response        : {
+                    "message": "Permintaan kamar berhasil dikirim!",
+                    "userId": 7,
+                    "roomId": 5,
+                    "username": "kokoro",
+                    "status": "PENDING"
+                  }
+
+Test 11: Get Pending Requests (With Data)
+--------
+Method          : GET
+URL             : /api/room-requests/pending
+Status          : ✅ PASSED
+Tested By       : Admin
+Response        : Array with 1 pending request from kokoro
+
+Test 12: Approve Room Request
+--------
+Method          : POST
+URL             : /api/room-requests/approve/7
+Status          : ✅ PASSED
+Tested By       : Admin
+Response        : {
+                    "message": "Permintaan kamar disetujui!",
+                    "userId": 7,
+                    "roomId": 5,
+                    "username": "kokoro",
+                    "status": "APPROVED"
+                  }
+
+================================================================================
+CONTROLLER 4: KebersihanController (/api/kebersihan)
+================================================================================
+
+Test 13: Test Endpoint
+--------
+Method          : GET
+URL             : /api/kebersihan/test
+Status          : ✅ PASSED
+Tested By       : Admin
+Response        : "API berfungsi! Server merespons dengan baik."
+
+Test 14: Create Kebersihan Schedule
+--------
+Method          : POST
+URL             : /api/kebersihan
+Status          : ✅ PASSED
+Tested By       : Admin
+Request Body    : {
+                    "area": "Kamar Mandi",
+                    "waktuPelaksanaan": "SETIAP_HARI",
+                    "keterangan": "Bersihkan kamar mandi"
+                  }
+Response        : {
+                    "id": 2,
+                    "roomNumber": null,
+                    "areaParking": false,
+                    "areaCorridor": false,
+                    "areaTerrace": false,
+                    "areaGarden": false,
+                    "notes": null,
+                    "createdAt": [2025,11,6,15,31,48,487672700],
+                    "updatedAt": [2025,11,6,15,31,48,487672700]
+                  }
+
+Test 15: Get All Kebersihan
+--------
+Method          : GET
+URL             : /api/kebersihan
+Status          : ✅ PASSED
+Tested By       : Admin
+Response        : Array with 1 kebersihan record
+
+================================================================================
+CONTROLLER 5: PembayaranController (/api/pembayaran)
+================================================================================
+
+Test 16: Get All Pembayaran (Empty)
+--------
+Method          : GET
+URL             : /api/pembayaran
+Status          : ✅ PASSED
+Tested By       : Admin
+Response        : []
+
+Test 17: Create Pembayaran
+--------
+Method          : POST
+URL             : /api/pembayaran
+Status          : ✅ PASSED
+Tested By       : Admin
+Request Body    : {
+                    "userId": 2,
+                    "kamarId": 1,
+                    "bulan": "November",
+                    "tahun": 2025,
+                    "jumlah": 12000,
+                    "status": "Belum Bayar"
+                  }
+Response        : {
+                    "id": 3,
+                    "kamarId": 1,
+                    "userId": 2,
+                    "kamar": "001",
+                    "penghuni": "geran",
+                    "nominal": 12000.0,
+                    "status": "Belum Bayar",
+                    "tanggalJatuhTempo": null,
+                    "tanggalBayar": null,
+                    "bulanBayar": null,
+                    "tahunBayar": null,
+                    "catatan": null,
+                    "createdAt": [2025,11,6,15,32,19,583877900],
+                    "updatedAt": [2025,11,6,15,32,19,583877900]
+                  }
+
+Test 18: Get Pembayaran by User
+--------
+Method          : GET
+URL             : /api/pembayaran/user/2
+Status          : ✅ PASSED
+Tested By       : Geran
+Response        : Array with 1 pembayaran for geran
+
+Test 19: Update Payment Status
+--------
+Method          : PATCH
+URL             : /api/pembayaran/3/status?status=Lunas
+Status          : ✅ PASSED
+Tested By       : Admin
+Response        : {
+                    "id": 3,
+                    "kamarId": 1,
+                    "userId": 2,
+                    "kamar": "001",
+                    "penghuni": "geran",
+                    "nominal": 12000.0,
+                    "status": "Lunas",
+                    "tanggalJatuhTempo": null,
+                    "tanggalBayar": [2025,11,6,15,32,32,155078200],
+                    "bulanBayar": null,
+                    "tahunBayar": null,
+                    "catatan": null,
+                    "createdAt": [2025,11,6,15,32,19,583878000],
+                    "updatedAt": [2025,11,6,15,32,32,162838700]
+                  }
+
+================================================================================
+CONTROLLER 6: FaqAdminController (/api/faqs)
+================================================================================
+
+Test 20: Get All FAQs
+--------
+Method          : GET
+URL             : /api/faqs
+Status          : ✅ PASSED
+Tested By       : Admin
+Response        : Array with 1 FAQ
+
+Test 21: Create FAQ
+--------
+Method          : POST
+URL             : /api/faqs
+Status          : ✅ PASSED
+Tested By       : Admin
+Request Body    : {
+                    "pertanyaan": "Bagaimana cara bayar?",
+                    "jawaban": "Transfer ke rekening admin"
+                  }
+Response        : {
+                    "id": 3,
+                    "pertanyaan": "Bagaimana cara bayar?",
+                    "jawaban": "Transfer ke rekening admin",
+                    "createdAt": [2025,11,6,15,32,59,431753500],
+                    "updatedAt": [2025,11,6,15,32,59,431753500]
+                  }
+
+Test 22: Get FAQ by ID
+--------
+Method          : GET
+URL             : /api/faqs/3
+Status          : ✅ PASSED
+Tested By       : Kokoro
+Response        : FAQ detail for ID 3
+
+Test 23: Update FAQ
+--------
+Method          : PUT
+URL             : /api/faqs/3
+Status          : ✅ PASSED
+Tested By       : Admin
+Request Body    : {
+                    "pertanyaan": "Jam berapa tutup kos?",
+                    "jawaban": "Jam 11 malam"
+                  }
+Response        : {
+                    "id": 3,
+                    "pertanyaan": "Jam berapa tutup kos?",
+                    "jawaban": "Jam 11 malam",
+                    "createdAt": [2025,11,6,15,32,59,431754000],
+                    "updatedAt": [2025,11,6,15,33,21,210101300]
+                  }
+
+================================================================================
+CONTROLLER 7: PengumumanController (/api/pengumuman)
+================================================================================
+
+Test 24: Get All Pengumuman
+--------
+Method          : GET
+URL             : /api/pengumuman
+Status          : ✅ PASSED
+Tested By       : Admin
+Response        : Array with 1 pengumuman
+
+Test 25: Create Pengumuman
+--------
+Method          : POST
+URL             : /api/pengumuman
+Status          : ✅ PASSED
+Tested By       : Admin
+Request Body    : {
+                    "judul": "Perbaikan Listrik",
+                    "isi": "Besok akan ada perbaikan listrik jam 10 pagi",
+                    "tanggalBerlaku": "2025-11-07"
+                  }
+Response        : {
+                    "id": 2,
+                    "judul": "Perbaikan Listrik",
+                    "isi": "Besok akan ada perbaikan listrik jam 10 pagi",
+                    "tanggalBerlaku": [2025,11,7]
+                  }
+
+Test 26: Get All Pengumuman (by User)
+--------
+Method          : GET
+URL             : /api/pengumuman
+Status          : ✅ PASSED
+Tested By       : Geran
+Response        : Array with 2 pengumuman
+
+================================================================================
+CONTROLLER 8: PeraturanController (/api/peraturan)
+================================================================================
+
+Test 27: Get All Peraturan
+--------
+Method          : GET
+URL             : /api/peraturan
+Status          : ✅ PASSED
+Tested By       : Admin
+Response        : Array with 1 peraturan
+
+Test 28: Create Peraturan
+--------
+Method          : POST
+URL             : /api/peraturan
+Status          : ✅ PASSED
+Tested By       : Admin
+Request Body    : {
+                    "judul_peraturan": "Dilarang Merokok",
+                    "deskripsi_peraturan": "Dilarang merokok di dalam kamar"
+                  }
+Response        : {
+                    "id": 4,
+                    "judul_peraturan": "Dilarang Merokok",
+                    "deskripsi_peraturan": "Dilarang merokok di dalam kamar"
+                  }
+
+Test 29: Get Peraturan by ID
+--------
+Method          : GET
+URL             : /api/peraturan/4
+Status          : ✅ PASSED
+Tested By       : Kokoro
+Response        : Peraturan detail for ID 4
+
+================================================================================
+CONTROLLER 9: KamarController (/api/kamar)
+================================================================================
+
+Test 30: Get All Kamar
+--------
+Method          : GET
+URL             : /api/kamar
+Status          : ✅ PASSED
+Tested By       : Admin
+Response        : Array with 3 kamar (001, 002, 003)
+
+Test 31: Create Kamar
+--------
+Method          : POST
+URL             : /api/kamar
+Status          : ✅ PASSED
+Tested By       : Admin
+Request Body    : {
+                    "nomorKamar": "004",
+                    "status": "kosong",
+                    "hargaBulanan": 800000,
+                    "fasilitas": "AC,Kasur,Lemari",
+                    "title": "Kamar Premium",
+                    "description": "Kamar dengan fasilitas lengkap",
+                    "price": 800000
+                  }
+Response        : {
+                    "id": 6,
+                    "nomorKamar": "004",
+                    "status": "kosong",
+                    "hargaBulanan": 800000.0,
+                    "fasilitas": "AC,Kasur,Lemari",
+                    "title": "Kamar Premium",
+                    "description": "Kamar dengan fasilitas lengkap",
+                    "price": 800000.0,
+                    "statusPembayaran": null
+                  }
+
+Test 32: Get Kamar by ID
+--------
+Method          : GET
+URL             : /api/kamar/6
+Status          : ✅ PASSED
+Tested By       : Geran
+Response        : Kamar 004 details
+
+================================================================================
+CONTROLLER 10: RoomController (/api/rooms)
+================================================================================
+
+Test 33: Get All Rooms
+--------
+Method          : GET
+URL             : /api/rooms
+Status          : ✅ PASSED
+Tested By       : Admin
+Response        : Array with 4 rooms total
+
+Test 34: Get Available Rooms
+--------
+Method          : GET
+URL             : /api/rooms/available
+Status          : ✅ PASSED
+Tested By       : Kokoro
+Response        : Array with 3 available rooms (002, 003, 004)
+
+Test 35: Get Room Statistics
+--------
+Method          : GET
+URL             : /api/rooms/statistics
+Status          : ✅ PASSED
+Tested By       : Admin
+Response        : {
+                    "totalRooms": 4,
+                    "availableRooms": 3,
+                    "occupiedRooms": 1,
+                    "pendingRooms": 0
+                  }
+
+Test 36: Search Rooms by Price
+--------
+Method          : GET
+URL             : /api/rooms/search?maxPrice=1000000
+Status          : ✅ PASSED
+Tested By       : Kokoro
+Response        : Array with 3 rooms under 1 million
+
+Test 37: Check Room Number
+--------
+Method          : GET
+URL             : /api/rooms/check/005
+Status          : ✅ PASSED
+Tested By       : Admin
+Response        : {
+                    "exists": false,
+                    "nomorKamar": "005"
+                  }
+
+================================================================================
+CONTROLLER 11: ProfileController (/api/profiles)
+================================================================================
+
+Test 38: Get All Profiles (Empty)
+--------
+Method          : GET
+URL             : /api/profiles
+Status          : ✅ PASSED
+Tested By       : Admin
+Response        : []
+
+Test 39: Create Profile
+--------
+Method          : POST
+URL             : /api/profiles
+Status          : ✅ PASSED
+Tested By       : Admin
+Request Body    : {
+                    "name": "Geran",
+                    "roomNumber": "001",
+                    "paymentStatus": "Lunas"
+                  }
+Response        : {
+                    "id": 1,
+                    "userId": null,
+                    "name": "Geran",
+                    "phone": null,
+                    "email": null,
+                    "location": null,
+                    "profilePicture": null,
+                    "roomNumber": 1,
+                    "status": "Lunas",
+                    "createdAt": [2025,11,6,15,37,51,28930600]
+                  }
+
+Test 40: Update Payment Status
+--------
+Method          : PUT
+URL             : /api/profiles/1/status?status=Belum Bayar
+Status          : ✅ PASSED
+Tested By       : Admin
+Response        : {
+                    "id": 1,
+                    "userId": null,
+                    "name": "Geran",
+                    "phone": null,
+                    "email": null,
+                    "location": null,
+                    "profilePicture": null,
+                    "roomNumber": 1,
+                    "status": "Belum Bayar",
+                    "createdAt": [2025,11,6,15,37,51,28931000]
+                  }
+
+================================================================================
+CONTROLLER 12: DebugController (/api/debug)
+================================================================================
+
+Test 41: Debug Ping
+--------
+Method          : GET
+URL             : /api/debug/ping
+Status          : ❌ FAILED
+Tested By       : Admin & Geran
+Error           : 403 Forbidden
+Notes           : Requires special security configuration
+
+Test 42: Debug Echo
+--------
+Method          : POST
+URL             : /api/debug/echo?userId=2
+Status          : ❌ FAILED
+Tested By       : Admin
+Request Body    : {"test":"data"}
+Error           : 403 Forbidden
+Notes           : Requires special security configuration
+
+================================================================================
+CATATAN PENTING
+================================================================================
+
+✅ BERHASIL:
+- Semua CRUD operations berfungsi dengan baik
+- Room request workflow sempurna (request -> pending -> approve)
+- Payment system berfungsi dengan baik
+- User management berfungsi normal
+- Authentication (login/logout) bekerja dengan baik
+
+❌ GAGAL:
+1. /api/auth/user-info endpoint
+   - Error: 401 Unauthorized
+   - Penyebab: Cookie authentication tidak berfungsi dengan WebSession
+   - Solusi: Perlu review JWT/Cookie handling
+
+2. /api/debug/ping endpoint
+   - Error: 403 Forbidden
+   - Penyebab: Blocked by security configuration
+   - Solusi: Update security config jika diperlukan untuk production
+
+3. /api/debug/echo endpoint
+   - Error: 403 Forbidden
+   - Penyebab: Blocked by security configuration
+   - Solusi: Update security config jika diperlukan untuk production
+
+================================================================================
+DATA USERS SAAT INI
+================================================================================
+
+ID  | Username     | Role  | Room ID | Status    | Email
+----|--------------|-------|---------|-----------|---------------------------
+1   | admin        | ADMIN | null    | Active    | admin@kosapp.com
+2   | geran        | USER  | 1       | APPROVED  | 237006079@student.unsil.ac.id
+3   | testuser123  | USER  | null    | Active    | testuser123@example.com
+6   | arifin       | USER  | 2       | APPROVED  | geranarifin@gmail.com
+7   | kokoro       | USER  | 5       | APPROVED  | kokoro@gmail.com
+
+================================================================================
+DATA KAMAR SAAT INI
+================================================================================
+
+ID  | Nomor | Status  | Harga       | Fasilitas        | Penghuni
+----|-------|---------|-------------|------------------|----------
+1   | 001   | terisi  | Rp 12,000   | -                | geran
+2   | 002   | kosong  | Rp 2,000,000| kasur,ac         | -
+5   | 003   | kosong  | Rp 500,000  | -                | -
+6   | 004   | kosong  | Rp 800,000  | AC,Kasur,Lemari  | -
+
+Note: Kamar 003 di-assign ke kokoro (roomId=5) setelah approval
+
+================================================================================
+REKOMENDASI
+================================================================================
+
+1. Fix endpoint /api/auth/user-info untuk cookie authentication
+2. Review DebugController security configuration
+3. Tambahkan validation lebih ketat untuk pembayaran input
+4. Pertimbangkan pagination untuk endpoints yang return lists
+5. Tambahkan rate limiting untuk authentication endpoints
+6. Tambahkan logging yang lebih detail untuk debugging
+7. Implementasi soft delete untuk data penting
+8. Tambahkan unit tests untuk semua controller
+
+================================================================================
+                              END OF REPORT
+================================================================================

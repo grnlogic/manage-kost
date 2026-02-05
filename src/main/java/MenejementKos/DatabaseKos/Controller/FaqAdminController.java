@@ -23,7 +23,7 @@ import MenejementKos.DatabaseKos.model.FaqAdmin;
 
 @RestController
 @RequestMapping("/api/faqs")
-@CrossOrigin(origins = {"http://localhost:3000", "*"}) // izinkan frontend React localhost
+@CrossOrigin(origins = {"http://141.11.25.167:3000", "*"}) // izinkan frontend React localhost
 public class FaqAdminController {
     private final FaqAdminService faqAdminService;
     public FaqAdminController(FaqAdminService faqAdminService) {

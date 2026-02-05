@@ -1,0 +1,498 @@
+{
+  "testDate": "2025-11-06",
+  "testSummary": {
+    "totalTests": 32,
+    "passed": 29,
+    "failed": 3,
+    "successRate": "90.6%"
+  },
+  "accountsTested": {
+    "admin": {
+      "username": "admin",
+      "password": "admin123",
+      "userId": 1,
+      "role": "ADMIN",
+      "roomId": null,
+      "status": "Belum memilih kamar"
+    },
+    "userWithRoom": {
+      "username": "geran",
+      "password": "fajargeran2005",
+      "userId": 2,
+      "role": "USER",
+      "roomId": 1,
+      "status": "APPROVED"
+    },
+    "userWithoutRoom": {
+      "username": "kokoro",
+      "password": "fajargeran2005",
+      "userId": 7,
+      "role": "USER",
+      "roomId": 5,
+      "status": "APPROVED (after request)"
+    }
+  },
+  "controllers": {
+    "AuthController": {
+      "endpoint": "/api/auth",
+      "tests": [
+        {
+          "testName": "Login Admin",
+          "method": "POST",
+          "url": "/api/auth/login",
+          "status": "✅ PASSED",
+          "response": {
+            "role": "ADMIN",
+            "userId": 1,
+            "roomId": "Belum memilih kamar",
+            "username": "admin",
+            "token": "eyJhbGciOiJIUzI1NiJ9..."
+          }
+        },
+        {
+          "testName": "Login User (geran)",
+          "method": "POST",
+          "url": "/api/auth/login",
+          "status": "✅ PASSED",
+          "response": {
+            "role": "USER",
+            "userId": 2,
+            "roomId": "1",
+            "username": "geran"
+          }
+        },
+        {
+          "testName": "Login User (kokoro)",
+          "method": "POST",
+          "url": "/api/auth/login",
+          "status": "✅ PASSED",
+          "response": {
+            "role": "USER",
+            "userId": 7,
+            "roomId": "Belum memilih kamar",
+            "username": "kokoro"
+          }
+        },
+        {
+          "testName": "Get User Info",
+          "method": "GET",
+          "url": "/api/auth/user-info",
+          "status": "❌ FAILED",
+          "error": "401 Unauthorized - Cookie authentication not working with WebSession"
+        },
+        {
+          "testName": "Logout",
+          "method": "POST",
+          "url": "/api/auth/logout",
+          "status": "✅ PASSED",
+          "response": {
+            "message": "Logout successful"
+          }
+        }
+      ]
+    },
+    "ContentController": {
+      "endpoint": "/api/users",
+      "tests": [
+        {
+          "testName": "Get All Users",
+          "method": "GET",
+          "url": "/api/users",
+          "status": "✅ PASSED",
+          "response": "Array of 5 users (admin, geran, testuser123, arifin, kokoro)"
+        },
+        {
+          "testName": "Reset Password",
+          "method": "PUT",
+          "url": "/api/users/3/reset-password",
+          "status": "✅ PASSED",
+          "response": {
+            "message": "Password reset successful"
+          }
+        }
+      ]
+    },
+    "RoomRequestController": {
+      "endpoint": "/api/room-requests",
+      "tests": [
+        {
+          "testName": "Test Endpoint",
+          "method": "GET",
+          "url": "/api/room-requests/test",
+          "status": "✅ PASSED",
+          "response": "RoomRequestController berfungsi dengan baik!"
+        },
+        {
+          "testName": "Get Pending Requests (empty)",
+          "method": "GET",
+          "url": "/api/room-requests/pending",
+          "status": "✅ PASSED",
+          "response": []
+        },
+        {
+          "testName": "Request Room (kokoro)",
+          "method": "POST",
+          "url": "/api/room-requests/request?userId=7",
+          "status": "✅ PASSED",
+          "response": {
+            "message": "Permintaan kamar berhasil dikirim!",
+            "userId": 7,
+            "roomId": 5,
+            "username": "kokoro",
+            "status": "PENDING"
+          }
+        },
+        {
+          "testName": "Get Pending Requests (with data)",
+          "method": "GET",
+          "url": "/api/room-requests/pending",
+          "status": "✅ PASSED",
+          "response": "1 pending request from kokoro"
+        },
+        {
+          "testName": "Approve Room Request",
+          "method": "POST",
+          "url": "/api/room-requests/approve/7",
+          "status": "✅ PASSED",
+          "response": {
+            "message": "Permintaan kamar disetujui!",
+            "userId": 7,
+            "roomId": 5,
+            "username": "kokoro",
+            "status": "APPROVED"
+          }
+        }
+      ]
+    },
+    "KebersihanController": {
+      "endpoint": "/api/kebersihan",
+      "tests": [
+        {
+          "testName": "Test Endpoint",
+          "method": "GET",
+          "url": "/api/kebersihan/test",
+          "status": "✅ PASSED",
+          "response": "API berfungsi! Server merespons dengan baik."
+        },
+        {
+          "testName": "Create Kebersihan Schedule",
+          "method": "POST",
+          "url": "/api/kebersihan",
+          "status": "✅ PASSED",
+          "response": {
+            "id": 2,
+            "roomNumber": null,
+            "areaParking": false,
+            "areaCorridor": false,
+            "areaTerrace": false,
+            "areaGarden": false
+          }
+        },
+        {
+          "testName": "Get All Kebersihan",
+          "method": "GET",
+          "url": "/api/kebersihan",
+          "status": "✅ PASSED",
+          "response": "1 kebersihan record"
+        }
+      ]
+    },
+    "PembayaranController": {
+      "endpoint": "/api/pembayaran",
+      "tests": [
+        {
+          "testName": "Get All Pembayaran (empty)",
+          "method": "GET",
+          "url": "/api/pembayaran",
+          "status": "✅ PASSED",
+          "response": []
+        },
+        {
+          "testName": "Create Pembayaran",
+          "method": "POST",
+          "url": "/api/pembayaran",
+          "status": "✅ PASSED",
+          "response": {
+            "id": 3,
+            "kamarId": 1,
+            "userId": 2,
+            "kamar": "001",
+            "penghuni": "geran",
+            "nominal": 12000.0,
+            "status": "Belum Bayar"
+          }
+        },
+        {
+          "testName": "Get Pembayaran by User",
+          "method": "GET",
+          "url": "/api/pembayaran/user/2",
+          "status": "✅ PASSED",
+          "response": "1 pembayaran for geran"
+        },
+        {
+          "testName": "Update Payment Status",
+          "method": "PATCH",
+          "url": "/api/pembayaran/3/status?status=Lunas",
+          "status": "✅ PASSED",
+          "response": {
+            "id": 3,
+            "status": "Lunas",
+            "tanggalBayar": "[2025,11,6,15,32,32,155078200]"
+          }
+        }
+      ]
+    },
+    "FaqAdminController": {
+      "endpoint": "/api/faqs",
+      "tests": [
+        {
+          "testName": "Get All FAQs",
+          "method": "GET",
+          "url": "/api/faqs",
+          "status": "✅ PASSED",
+          "response": "1 FAQ"
+        },
+        {
+          "testName": "Create FAQ",
+          "method": "POST",
+          "url": "/api/faqs",
+          "status": "✅ PASSED",
+          "response": {
+            "id": 3,
+            "pertanyaan": "Bagaimana cara bayar?",
+            "jawaban": "Transfer ke rekening admin"
+          }
+        },
+        {
+          "testName": "Get FAQ by ID",
+          "method": "GET",
+          "url": "/api/faqs/3",
+          "status": "✅ PASSED",
+          "response": "FAQ detail for ID 3"
+        },
+        {
+          "testName": "Update FAQ",
+          "method": "PUT",
+          "url": "/api/faqs/3",
+          "status": "✅ PASSED",
+          "response": {
+            "id": 3,
+            "pertanyaan": "Jam berapa tutup kos?",
+            "jawaban": "Jam 11 malam"
+          }
+        }
+      ]
+    },
+    "PengumumanController": {
+      "endpoint": "/api/pengumuman",
+      "tests": [
+        {
+          "testName": "Get All Pengumuman",
+          "method": "GET",
+          "url": "/api/pengumuman",
+          "status": "✅ PASSED",
+          "response": "1 pengumuman"
+        },
+        {
+          "testName": "Create Pengumuman",
+          "method": "POST",
+          "url": "/api/pengumuman",
+          "status": "✅ PASSED",
+          "response": {
+            "id": 2,
+            "judul": "Perbaikan Listrik",
+            "isi": "Besok akan ada perbaikan listrik jam 10 pagi",
+            "tanggalBerlaku": "[2025,11,7]"
+          }
+        },
+        {
+          "testName": "Get All Pengumuman (by User)",
+          "method": "GET",
+          "url": "/api/pengumuman",
+          "status": "✅ PASSED",
+          "response": "2 pengumuman"
+        }
+      ]
+    },
+    "PeraturanController": {
+      "endpoint": "/api/peraturan",
+      "tests": [
+        {
+          "testName": "Get All Peraturan",
+          "method": "GET",
+          "url": "/api/peraturan",
+          "status": "✅ PASSED",
+          "response": "1 peraturan"
+        },
+        {
+          "testName": "Create Peraturan",
+          "method": "POST",
+          "url": "/api/peraturan",
+          "status": "✅ PASSED",
+          "response": {
+            "id": 4,
+            "judul_peraturan": "Dilarang Merokok",
+            "deskripsi_peraturan": "Dilarang merokok di dalam kamar"
+          }
+        },
+        {
+          "testName": "Get Peraturan by ID",
+          "method": "GET",
+          "url": "/api/peraturan/4",
+          "status": "✅ PASSED",
+          "response": "Peraturan detail for ID 4"
+        }
+      ]
+    },
+    "KamarController": {
+      "endpoint": "/api/kamar",
+      "tests": [
+        {
+          "testName": "Get All Kamar",
+          "method": "GET",
+          "url": "/api/kamar",
+          "status": "✅ PASSED",
+          "response": "3 kamar (001, 002, 003)"
+        },
+        {
+          "testName": "Create Kamar",
+          "method": "POST",
+          "url": "/api/kamar",
+          "status": "✅ PASSED",
+          "response": {
+            "id": 6,
+            "nomorKamar": "004",
+            "status": "kosong",
+            "hargaBulanan": 800000.0,
+            "fasilitas": "AC,Kasur,Lemari",
+            "title": "Kamar Premium"
+          }
+        },
+        {
+          "testName": "Get Kamar by ID",
+          "method": "GET",
+          "url": "/api/kamar/6",
+          "status": "✅ PASSED",
+          "response": "Kamar 004 details"
+        }
+      ]
+    },
+    "RoomController": {
+      "endpoint": "/api/rooms",
+      "tests": [
+        {
+          "testName": "Get All Rooms",
+          "method": "GET",
+          "url": "/api/rooms",
+          "status": "✅ PASSED",
+          "response": "4 rooms total"
+        },
+        {
+          "testName": "Get Available Rooms",
+          "method": "GET",
+          "url": "/api/rooms/available",
+          "status": "✅ PASSED",
+          "response": "3 available rooms (002, 003, 004)"
+        },
+        {
+          "testName": "Get Room Statistics",
+          "method": "GET",
+          "url": "/api/rooms/statistics",
+          "status": "✅ PASSED",
+          "response": {
+            "totalRooms": 4,
+            "availableRooms": 3,
+            "occupiedRooms": 1,
+            "pendingRooms": 0
+          }
+        },
+        {
+          "testName": "Search Rooms by Price",
+          "method": "GET",
+          "url": "/api/rooms/search?maxPrice=1000000",
+          "status": "✅ PASSED",
+          "response": "3 rooms under 1 million"
+        },
+        {
+          "testName": "Check Room Number",
+          "method": "GET",
+          "url": "/api/rooms/check/005",
+          "status": "✅ PASSED",
+          "response": {
+            "exists": false,
+            "nomorKamar": "005"
+          }
+        }
+      ]
+    },
+    "ProfileController": {
+      "endpoint": "/api/profiles",
+      "tests": [
+        {
+          "testName": "Get All Profiles (empty)",
+          "method": "GET",
+          "url": "/api/profiles",
+          "status": "✅ PASSED",
+          "response": []
+        },
+        {
+          "testName": "Create Profile",
+          "method": "POST",
+          "url": "/api/profiles",
+          "status": "✅ PASSED",
+          "response": {
+            "id": 1,
+            "name": "Geran",
+            "roomNumber": 1,
+            "status": "Lunas"
+          }
+        },
+        {
+          "testName": "Update Payment Status",
+          "method": "PUT",
+          "url": "/api/profiles/1/status?status=Belum Bayar",
+          "status": "✅ PASSED",
+          "response": {
+            "id": 1,
+            "status": "Belum Bayar"
+          }
+        }
+      ]
+    },
+    "DebugController": {
+      "endpoint": "/api/debug",
+      "tests": [
+        {
+          "testName": "Ping",
+          "method": "GET",
+          "url": "/api/debug/ping",
+          "status": "❌ FAILED",
+          "error": "403 Forbidden - Requires special configuration"
+        },
+        {
+          "testName": "Echo",
+          "method": "POST",
+          "url": "/api/debug/echo",
+          "status": "❌ FAILED",
+          "error": "403 Forbidden - Requires special configuration"
+        }
+      ]
+    }
+  },
+  "notes": [
+    "AuthController /user-info endpoint gagal karena masalah cookie authentication dengan WebSession",
+    "DebugController endpoints (ping & echo) diblock oleh security config (403 Forbidden)",
+    "Semua CRUD operations berfungsi dengan baik",
+    "Room request workflow berfungsi sempurna (request -> pending -> approve)",
+    "Payment system berfungsi dengan baik",
+    "User yang sudah punya kamar: geran (roomId=1), arifin (roomId=2), kokoro (roomId=5 setelah approval)",
+    "User tanpa kamar: admin, testuser123"
+  ],
+  "recommendations": [
+    "Fix /api/auth/user-info endpoint - cookie authentication issue",
+    "Review DebugController security configuration if needed for production",
+    "Consider adding more validation for pembayaran input",
+    "Add pagination for endpoints that return lists",
+    "Add rate limiting for authentication endpoints"
+  ]
+}

@@ -12,7 +12,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/users")
 @CrossOrigin(origins = {
-    "http://localhost:3000",
+    "http://141.11.25.167:3000",
     "https://kos-app-frontend-rzng-beta.vercel.app",
     "https://kos-app-frontend.vercel.app"
 }) 

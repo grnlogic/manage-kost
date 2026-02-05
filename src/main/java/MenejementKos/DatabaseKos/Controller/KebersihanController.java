@@ -73,11 +73,11 @@ public class KebersihanController {
     @PutMapping("/{id}")
     public ResponseEntity<Kebersihan> update(@PathVariable Long id, @RequestBody Kebersihan kebersihan) {
         try {
-            logger.info("Updating kebersihan with id: {} and data: {}", id, kebersihan);
-            Kebersihan updated = service.update(id, kebersihan);
-            return ResponseEntity.ok(updated);
+            logger.info("Creating new kebersihan record (overwrite) with reference id: {} and data: {}", id, kebersihan);
+            Kebersihan created = service.update(id, kebersihan);
+            return ResponseEntity.ok(created);
         } catch (Exception e) {
-            logger.error("Error updating kebersihan with id {}: {}", id, e.getMessage(), e);
+            logger.error("Error creating new kebersihan record: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

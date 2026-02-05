@@ -13,9 +13,11 @@ public interface MyAppUserRepository extends JpaRepository<MyAppUser, Long> {
     
     Optional<MyAppUser> findByEmail(String email);
     
+    Optional<MyAppUser> findByRoomId(Long roomId);
+    
     List<MyAppUser> findByRoomRequestStatusAndRoomIdNotNull(String status);
 
-List<MyAppUser> findByRoomRequestStatus(String status);
+    List<MyAppUser> findByRoomRequestStatus(String status);
 
     boolean existsByUsername(String username);
     

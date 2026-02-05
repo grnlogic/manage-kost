@@ -1,58 +1,63 @@
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/CORS.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Controller/ContentController.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Controller/FaqAdminController.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Controller/GlobalExceptionHandler.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Controller/KamarController.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Controller/KebersihanController.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Controller/PengumumanController.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Controller/PeraturanController.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Controller/ProfileController.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Controller/RoomController.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/DTO/AssignRoomRequest.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/DTO/LoginRequest.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/DTO/RegisterRequest.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/DTO/ResetPasswordRequest.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/DTO/VerifyOtpRequest.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/DatabaseKosApplication.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Security/JwtAuthFilter.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Security/SecurityConfig.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Service/EmailService.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Service/FaqAdminService.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Service/JwtService.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Service/KamarService.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Service/KebersihanService.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Service/OtpService.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Service/PengumumanService.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Service/PeraturanService.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Service/ProfileService.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Service/RoomService.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/Service/UserService.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/config/CorsFilter.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/config/EmailConfig.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/config/MailConfig.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/config/WebConfig.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/controller/AuthController.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/controller/HealthController.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/controller/UserRedirectController.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/model/Clomun.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/model/FaqAdmin.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/model/Kebersihan.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/model/MyAppUser.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/model/MyAppUserRepository.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/model/MyAppUserService.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/model/OtpToken.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/model/OtpTokenRepository.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/model/PengumumanAdmin.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/model/Profile.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/model/WaktuPelaksanaan.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/model/kamar.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/model/peraturan.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/repository/FaqAdminRepository.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/repository/KamarRepository.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/repository/KebersihanRepository.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/repository/OtpTokenRepository.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/repository/PembayaranRepository.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/repository/PengumumanRepository.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/repository/ProfileRepository.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/repository/RoomRepository.java
-/home/fajar/Documents/KosApp Website/manage-kost/src/main/java/MenejementKos/DatabaseKos/repository/peraturanRepository.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\CORS.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\config\CorsFilter.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\config\EmailConfig.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\config\MailConfig.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\config\WebConfig.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Controller\AuthController.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Controller\ContentController.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Controller\DebugController.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Controller\FaqAdminController.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Controller\GlobalExceptionHandler.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Controller\HealthController.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Controller\KamarController.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Controller\KebersihanController.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Controller\PembayaranController.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Controller\PengumumanController.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Controller\PeraturanController.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Controller\ProfileController.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Controller\RoomController.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Controller\RoomRequestController.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Controller\UserRedirectController.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\DatabaseKosApplication.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\DTO\AssignRoomRequest.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\DTO\LoginRequest.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\DTO\RegisterRequest.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\DTO\ResetPasswordRequest.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\DTO\VerifyOtpRequest.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\model\Clomun.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\model\FaqAdmin.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\model\kamar.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\model\Kebersihan.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\model\MyAppUser.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\model\MyAppUserRepository.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\model\MyAppUserService.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\model\OtpToken.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\model\OtpTokenRepository.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\model\Pembayaran.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\model\PengumumanAdmin.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\model\peraturan.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\model\Profile.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\model\WaktuPelaksanaan.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\repository\FaqAdminRepository.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\repository\KamarRepository.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\repository\KebersihanRepository.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\repository\OtpTokenRepository.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\repository\PembayaranRepository.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\repository\PengumumanRepository.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\repository\peraturanRepository.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\repository\ProfileRepository.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\repository\RoomRepository.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Security\JwtAuthFilter.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Security\SecurityConfig.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Service\EmailService.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Service\FaqAdminService.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Service\JwtService.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Service\KamarService.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Service\KebersihanService.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Service\OtpService.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Service\PembayaranService.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Service\PengumumanService.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Service\PeraturanService.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Service\ProfileService.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Service\RoomService.java
+D:\kos-app\manage-kost\src\main\java\MenejementKos\DatabaseKos\Service\UserService.java

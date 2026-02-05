@@ -74,6 +74,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/pengumuman/**").permitAll()
                 .requestMatchers("/api/kebersihan/**").permitAll()
                 .requestMatchers("/api/rooms/**").permitAll()
+                .requestMatchers("/api/pembayaran/**").permitAll() // Allow pembayaran endpoints
                 .requestMatchers("/admin/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
             )

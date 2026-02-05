@@ -1,1 +1,5 @@
-MenejementKos/DatabaseKos/DatabaseKosApplicationTests.class
+MenejementKos\DatabaseKos\integration\PeraturanIntegrationTest.class
+MenejementKos\DatabaseKos\DatabaseKosApplicationTests.class
+MenejementKos\DatabaseKos\Service\UserServiceTest.class
+MenejementKos\DatabaseKos\Service\JwtServiceTest.class
+MenejementKos\DatabaseKos\Service\KamarServiceTest.class

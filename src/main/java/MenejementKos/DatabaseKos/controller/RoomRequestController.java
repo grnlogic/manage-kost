@@ -1,4 +1,4 @@
-package MenejementKos.DatabaseKos.controller;
+package MenejementKos.DatabaseKos.Controller;
 
 import MenejementKos.DatabaseKos.DTO.AssignRoomRequest;
 import MenejementKos.DatabaseKos.Service.UserService;

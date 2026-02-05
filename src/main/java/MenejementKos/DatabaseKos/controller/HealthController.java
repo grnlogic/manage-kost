@@ -1,4 +1,4 @@
-package MenejementKos.DatabaseKos.controller;
+package MenejementKos.DatabaseKos.Controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

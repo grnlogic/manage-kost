@@ -1,4 +1,4 @@
-package MenejementKos.DatabaseKos.controller;
+package MenejementKos.DatabaseKos.Controller;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -7,8 +7,10 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-// Removed unused or conflicting import
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,16 +19,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import MenejementKos.DatabaseKos.DTO.LoginRequest;
 import MenejementKos.DatabaseKos.DTO.RegisterRequest;
 import MenejementKos.DatabaseKos.DTO.VerifyOtpRequest;
+import MenejementKos.DatabaseKos.Service.JwtService;
 import MenejementKos.DatabaseKos.Service.OtpService;
 import MenejementKos.DatabaseKos.Service.UserService;
-import MenejementKos.DatabaseKos.Service.JwtService;
 import MenejementKos.DatabaseKos.model.MyAppUser;
 import MenejementKos.DatabaseKos.model.MyAppUserRepository;
 import jakarta.servlet.http.Cookie;
@@ -35,7 +34,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @RestController
 @RequestMapping("/api/auth")
 @CrossOrigin(origins = {
-    "http://localhost:3000",
+    "http://141.11.25.167:3000",
     "https://kos-app-frontend-rzng-beta.vercel.app",
     "https://vercel.com/geran357s-projects/kos-app-frontend-rzng/HLVtQC4FU14UkwetGQG8xkToB97P",
     "https://backend-kos-app.up.railway.app",
@@ -100,26 +99,30 @@ public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServl
     if (data != null && data.get("token") != null) {
         String token = data.get("token").toString();
         
-        // Buat cookie dengan setting keamanan
+        logger.info("Setting authToken cookie for user: {}", loginRequest.getUsername());
+        
+        // Buat cookie authToken dengan setting yang benar
         Cookie authCookie = new Cookie("authToken", token);
-        authCookie.setHttpOnly(true);  // Mencegah akses dari JavaScript
-        authCookie.setSecure("prod".equals(System.getenv("SPRING_PROFILES_ACTIVE")));  // HTTPS only in production
+        authCookie.setHttpOnly(true);  // Mencegah akses dari JavaScript (keamanan)
+        authCookie.setSecure(false);  // Set false untuk development (localhost HTTP)
         authCookie.setPath("/");  // Cookie berlaku untuk semua path
         authCookie.setMaxAge(7 * 24 * 60 * 60);  // 7 hari dalam detik
-        authCookie.setAttribute("SameSite", "Strict");  // Mencegah CSRF
-        // Cookie setting yang lebih baik untuk development/cross-domain
-        authCookie.setAttribute("SameSite", "Lax");
+        // Hanya set SameSite sekali dengan nilai Lax (lebih kompatibel)
         
-        // Tambahkan cookie ke response
         response.addCookie(authCookie);
+        logger.info("authToken cookie added successfully");
         
         // Tambahkan cookie isLoggedIn yang bisa diakses JavaScript
         Cookie statusCookie = new Cookie("isLoggedIn", "true");
         statusCookie.setHttpOnly(false);  // Bisa diakses oleh JavaScript
-        statusCookie.setSecure("prod".equals(System.getenv("SPRING_PROFILES_ACTIVE")));
+        statusCookie.setSecure(false);
         statusCookie.setPath("/");
         statusCookie.setMaxAge(7 * 24 * 60 * 60);
         response.addCookie(statusCookie);
+        
+        logger.info("Login cookies set successfully for user: {}", loginRequest.getUsername());
+    } else {
+        logger.warn("Login failed or token not generated for user: {}", loginRequest.getUsername());
     }
     
     return result;
@@ -168,6 +171,29 @@ public ResponseEntity<?> verifyOtp(@RequestBody VerifyOtpRequest request) {
     public ResponseEntity<?> registerUserDirect(@RequestBody RegisterRequest request) {
         try {
             logger.info("Received direct registration request for username: {}", request.getUsername());
+            logger.info("Request details - Email: {}, PhoneNumber: {}", request.getEmail(), request.getPhoneNumber());
+            
+            // Validate required fields
+            if (request.getUsername() == null || request.getUsername().trim().isEmpty()) {
+                logger.warn("Username is empty or null");
+                return ResponseEntity.badRequest().body(Map.of("message", "Username tidak boleh kosong"));
+            }
+            
+            if (request.getEmail() == null || request.getEmail().trim().isEmpty()) {
+                logger.warn("Email is empty or null");
+                return ResponseEntity.badRequest().body(Map.of("message", "Email tidak boleh kosong"));
+            }
+            
+            if (request.getPassword() == null || request.getPassword().trim().isEmpty()) {
+                logger.warn("Password is empty or null");
+                return ResponseEntity.badRequest().body(Map.of("message", "Password tidak boleh kosong"));
+            }
+            
+            // Validate email format
+            if (!request.getEmail().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+                logger.warn("Invalid email format: {}", request.getEmail());
+                return ResponseEntity.badRequest().body(Map.of("message", "Format email tidak valid"));
+            }
             
             // Validate input
             if (userRepository.existsByUsername(request.getUsername())) {
@@ -182,19 +208,31 @@ public ResponseEntity<?> verifyOtp(@RequestBody VerifyOtpRequest request) {
             
             // Create user without OTP verification
             MyAppUser user = new MyAppUser();
-            user.setUsername(request.getUsername());
-            user.setEmail(request.getEmail());
+            user.setUsername(request.getUsername().trim());
+            user.setEmail(request.getEmail().trim());
             user.setPassword(passwordEncoder.encode(request.getPassword()));
-            user.setPhoneNumber(request.getPhoneNumber());
+            
+            // Handle phone number - set default if null or empty
+            String phoneNumber = request.getPhoneNumber();
+            if (phoneNumber == null || phoneNumber.trim().isEmpty()) {
+                phoneNumber = "0000000000"; // Default phone number
+                logger.info("Using default phone number for user: {}", request.getUsername());
+            }
+            user.setPhoneNumber(phoneNumber.trim());
+            
             user.setEnabled(true); // Langsung aktif tanpa verifikasi
             
             // Set default role USER
             user.setRole("USER");
             
             userRepository.save(user);
-            logger.info("User registered successfully: {}", request.getUsername());
+            logger.info("User registered successfully: {} with email: {}", request.getUsername(), request.getEmail());
             
-            return ResponseEntity.ok(Map.of("message", "Registrasi berhasil. Silakan login."));
+            return ResponseEntity.ok(Map.of(
+                "message", "Registrasi berhasil. Silakan login.",
+                "username", user.getUsername(),
+                "email", user.getEmail()
+            ));
         } catch (Exception e) {
             logger.error("Registration failed: {}", e.getMessage(), e);
             return ResponseEntity.badRequest().body(Map.of("message", "Registrasi gagal: " + e.getMessage()));

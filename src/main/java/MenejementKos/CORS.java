@@ -14,10 +14,10 @@ public class CORS {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins(
-                            "http://localhost:3000", 
+                            "http://141.11.25.167:3000", 
                             "https://kos-app-frontend-rzng-beta.vercel.app", 
                             "https://vercel.com/geran357s-projects/kos-app-frontend-rzng/HLVtQC4FU14UkwetGQG8xkToB97P",
-                            "https://manage-kost-production.up.railway.app"
+                            "http://141.11.25.167:8080"
                         ) 
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")

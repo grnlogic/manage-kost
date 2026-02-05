@@ -1,4 +1,4 @@
-package MenejementKos.DatabaseKos.controller;
+package MenejementKos.DatabaseKos.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +11,7 @@ import MenejementKos.DatabaseKos.DTO.AssignRoomRequest;
 @RestController
 @RequestMapping("/user")
 @CrossOrigin(origins = {
-    "http://localhost:3000",
+    "http://141.11.25.167:3000",
     "https://kos-app-frontend-rzng-beta.vercel.app",
     "https://kos-app-frontend.vercel.app"
 })

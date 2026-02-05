@@ -40,31 +40,16 @@ public class KebersihanService {
     }
 
     public Kebersihan update(Long id, Kebersihan updated) {
-        logger.info("Updating kebersihan record with id {}", id);
+        logger.info("Creating new kebersihan record (overwrite logic) for previous id {}", id);
         
         try {
-            Kebersihan existing = getById(id);
-
-            // Only update fields that are present in the request
-            if (updated.getRoomNumber() != null) {
-                existing.setRoomNumber(updated.getRoomNumber());
-            }
-            existing.setAreaParking(updated.isAreaParking());
-            existing.setAreaCorridor(updated.isAreaCorridor());
-            existing.setAreaTerrace(updated.isAreaTerrace());
-            existing.setAreaGarden(updated.isAreaGarden());
-            
-            
-            
-            if (updated.getNotes() != null) {
-                existing.setNotes(updated.getNotes());
-            }
-
-            Kebersihan result = repository.save(existing);
-            logger.info("Updated kebersihan record: {}", result);
+            // Tidak mencari existing record, langsung create new record
+            // Ini menghindari error "Data tidak ditemukan"
+            Kebersihan result = repository.save(updated);
+            logger.info("Created new kebersihan record: {}", result);
             return result;
         } catch (Exception e) {
-            logger.error("Error updating kebersihan record with id {}: {}", id, e.getMessage(), e);
+            logger.error("Error creating new kebersihan record: {}", e.getMessage(), e);
             throw e;
         }
     }

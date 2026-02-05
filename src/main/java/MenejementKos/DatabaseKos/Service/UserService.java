@@ -50,7 +50,9 @@ public class UserService {
             otpService.generateAndSendOtp(email);
             
             return ResponseEntity.ok(Map.of(
-                "message", "Kode OTP telah dikirim ke email Anda. Silakan periksa kotak masuk atau folder spam."
+                "message", "Kode OTP telah dibuat. Silakan cek console/log backend untuk melihat kode OTP.",
+                "devMode", true,
+                "hint", "OTP akan muncul di log backend dengan format: OTP CODE: XXXXXX"
             ));
         } catch (Exception e) {
             logger.error("Failed to process OTP request: {}", e.getMessage(), e);
